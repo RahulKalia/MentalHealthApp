@@ -2,6 +2,7 @@ package com.example.fitnesstrackingapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class UserLocalStore {
     public static final String SP_NAME = "userDetails";
@@ -18,9 +19,10 @@ public class UserLocalStore {
         spEditor.putString("occupation", user.occupation);
         spEditor.putString("activities played", user.activitiesPlayed);
         spEditor.putInt("age", user.age);
-        spEditor.putInt("Times Played per Week", user.numTimesWeekPlayed);
-        spEditor.putInt("Start DND Time", user.startDoNotDisturb);
-        spEditor.putInt("End DND Time", user.endDoNotDisturb);
+        spEditor.putInt("timesPlayedWeek", user.numTimesWeekPlayed);
+        spEditor.putInt("startDNDTime", user.startDoNotDisturb);
+        spEditor.putInt("endDNDTime", user.endDoNotDisturb);
+        spEditor.putBoolean("userRegistered", true);
         spEditor.commit();
     }
 
@@ -30,9 +32,9 @@ public class UserLocalStore {
         String occupation = userLocalDatabase.getString("occupation", "");
         String activitiesPlayed = userLocalDatabase.getString("activitiesPlayed", "");
         int age = userLocalDatabase.getInt("age", -1);
-        int numTimesWeekPlayed = userLocalDatabase.getInt("Times Played per Week", -1);
-        int startDoNotDisturb = userLocalDatabase.getInt("Start DND Time", -1);
-        int endDoNotDisturb = userLocalDatabase.getInt("End DND Time", -1);
+        int numTimesWeekPlayed = userLocalDatabase.getInt("timesPlayedWeek", -1);
+        int startDoNotDisturb = userLocalDatabase.getInt("startDNDTime", -1);
+        int endDoNotDisturb = userLocalDatabase.getInt("endDNDTime", -1);
 
         User storedUser = new User(name, occupation, activitiesPlayed, age, numTimesWeekPlayed, startDoNotDisturb, endDoNotDisturb);
 
@@ -44,6 +46,15 @@ public class UserLocalStore {
         SharedPreferences.Editor spEditor = userLocalDatabase.edit();
         spEditor.clear();
         spEditor.commit();
+    }
+
+    // Used to check if a user has been configured and therefore can direct the person to the correct activity.
+    public boolean checkUserConfigured(){
+        if (userLocalDatabase.getBoolean("userRegistered",false)){
+            return false;
+        }else{
+            return true;
+        }
     }
 
 
