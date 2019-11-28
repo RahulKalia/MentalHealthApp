@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:text="Start time of Do Not Disturb period" />
     <EditText
-        android:id="@+id/etstartDoNotDisturb"
+        android:id="@+id/etStartDND"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:text="End time of Do not Disturb period" />
     <EditText
-        android:id="@+id/etEndTimeDoNotDisturb"
+        android:id="@+id/etEndDND"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
