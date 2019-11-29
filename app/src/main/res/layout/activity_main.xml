@@ -8,10 +8,20 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
+
     <Button
         android:id="@+id/bRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onClick"
         android:text="Register" />
+
 </LinearLayout>

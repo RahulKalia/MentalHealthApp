@@ -12,7 +12,7 @@ public class UserLocalStore {
         userLocalDatabase = context.getSharedPreferences(SP_NAME, 0);
     }
 
-    // Store the user details from the items that are passed in using the user data type.
+    // Method stores the user details from the items that are passed in using the user data type.
     public void storeUserData(User user){
         SharedPreferences.Editor spEditor = userLocalDatabase.edit();
         spEditor.putString("name", user.name);
@@ -26,7 +26,7 @@ public class UserLocalStore {
         spEditor.commit();
     }
 
-    // Gets the user from the Shared Preferences userLocalDatabase.
+    // Method gets the user from the Shared Preferences userLocalDatabase.
     public User getUser(){
         String name = userLocalDatabase.getString("name","");
         String occupation = userLocalDatabase.getString("occupation", "");
@@ -41,16 +41,17 @@ public class UserLocalStore {
         return storedUser;
     }
 
-    // Used for testing so we can clear it each time - TO BE REMOVED.
+    // Method for testing so we can clear it each time - TO BE REMOVED.
     public void clearUserData(){
         SharedPreferences.Editor spEditor = userLocalDatabase.edit();
         spEditor.clear();
         spEditor.commit();
     }
 
-    // Used to check if a user has been configured and therefore can direct the person to the correct activity.
+    // Method to check if a user has been configured and therefore can direct the person to the correct activity.
     public boolean checkUserConfigured(){
-        if (userLocalDatabase.getBoolean("userRegistered",false)){
+        User currentUser = getUser();
+        if ( currentUser.name == ""){
             return false;
         }else{
             return true;
