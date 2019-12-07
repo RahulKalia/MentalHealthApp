@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText etName;
     TextView textView ;
-    Button bRegister;
+    Button bRegister, bSettings;
     static UserLocalStore localStore;
 
     // When activity is created create the local store and set button on click listener.
@@ -25,6 +25,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         bRegister = (Button) findViewById(R.id.bRegister);
+        bSettings = (Button) findViewById(R.id.bSettings);
+
+        bSettings.setOnClickListener(this);
         bRegister.setOnClickListener(this);
 
         localStore = new UserLocalStore(this);
@@ -59,13 +62,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    // This changes the view to the register class - TO BE CHANGED TO SOMETHING USEFUL LATER.
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.bRegister:
                 startActivity(new Intent(this, Register.class));
                 break;
+            case R.id.bSettings:
+                startActivity(new Intent(this, Settings.class));
         }
     }
 }
