@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     EditText etName;
+    TextView textView ;
     Button bRegister;
-    UserLocalStore localStore;
+    static UserLocalStore localStore;
 
     // When activity is created create the local store and set button on click listener.
     @Override
@@ -30,23 +34,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onStart(){
         super.onStart();
-        if (userExists() == true){
+        if (authenticate() == true){
             displayUserDetails();
+            bRegister.setVisibility(View.GONE);
         }else{
             startActivity(new Intent(this, Register.class));
         }
     }
 
     // Method to check userExists
-    private  boolean userExists(){
-        return localStore.checkUserConfigured();
+    private boolean authenticate(){
+        return localStore.getUserCreated();
     }
 
     // Method to display User Details - only used if user has been authenticated to exist.
     // TO BE CHANGED - additional features to be added here.
     private void displayUserDetails(){
-        User currentUser = localStore.getUser();
-        etName.setText(currentUser.name);
+        String name = localStore.getUser().name.toString();
+        if (name == null){
+            etName.setText("Name is null - please update.");
+        }else{
+            ((TextView)findViewById(R.id.textView)).setText(name);
+        }
+
     }
 
     // This changes the view to the register class - TO BE CHANGED TO SOMETHING USEFUL LATER.

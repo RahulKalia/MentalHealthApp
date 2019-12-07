@@ -22,7 +22,9 @@ public class UserLocalStore {
         spEditor.putInt("timesPlayedWeek", user.numTimesWeekPlayed);
         spEditor.putInt("startDNDTime", user.startDoNotDisturb);
         spEditor.putInt("endDNDTime", user.endDoNotDisturb);
-        spEditor.putBoolean("userRegistered", true);
+
+        setUserCreated(true);
+
         spEditor.commit();
     }
 
@@ -49,14 +51,22 @@ public class UserLocalStore {
     }
 
     // Method to check if a user has been configured and therefore can direct the person to the correct activity.
-    public boolean checkUserConfigured(){
-        User currentUser = getUser();
-        if ( currentUser.name == ""){
-            return false;
-        }else{
+    public boolean getUserCreated(){
+        if (userLocalDatabase.getBoolean("userCreated", false) == true){
             return true;
+        }else{
+            return false;
         }
     }
+
+    public void setUserCreated(boolean userCreated){
+        SharedPreferences.Editor spEditor = userLocalDatabase.edit();
+        spEditor.putBoolean("userCreated", userCreated);
+        spEditor.commit();
+    }
+
+
+
 
 
 }
