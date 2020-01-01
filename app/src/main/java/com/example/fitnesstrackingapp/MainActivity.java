@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText etName;
     TextView textView ;
-    Button bRegister, bSettings, bStepCounter;
+    Button bRegister, bSettings, bStepCounter , bTest;
     static UserLocalStore localStore;
 
     // When activity is created create the local store and set button on click listener.
@@ -27,10 +27,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bRegister = (Button) findViewById(R.id.bRegister);
         bSettings = (Button) findViewById(R.id.bSettings);
         bStepCounter = (Button) findViewById(R.id.bStepCounter);
+        bTest = (Button) findViewById(R.id.bTest);
 
         bSettings.setOnClickListener(this);
         bRegister.setOnClickListener(this);
         bStepCounter.setOnClickListener(this);
+        bTest.setOnClickListener(this);
 
         localStore = new UserLocalStore(this);
     }
@@ -76,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bStepCounter:
                 startActivity(new Intent(this, StepSensor.class));
                 break;
+            case R.id.bTest:
+                startActivity(new Intent(this, test.class));
         }
     }
 }
