@@ -35,6 +35,12 @@ public class ListDataActivity extends AppCompatActivity {
         populateListView();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateListView();
+    }
+
     private void populateListView(){
         Log.d(TAG, "populateListView: Displaying data in the ListView.");
 
@@ -51,6 +57,37 @@ public class ListDataActivity extends AppCompatActivity {
         //create the list adapter and set the adapter
         ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
         mListView.setAdapter(adapter);
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String name = adapterView.getItemAtPosition(i).toString();
+                Log.d(TAG, "onItemClick: You Clicked on " + name);
+
+                Cursor data = mDatabaseHelper.getItemID(name); //get the id associated with that name
+                int itemID = -1;
+                while(data.moveToNext()){
+                    itemID = data.getInt(0);
+                }
+                if(itemID > -1){
+                    Log.d(TAG, "onItemClick: The ID is: " + itemID);
+                    Intent editScreenIntent = new Intent(ListDataActivity.this, EditDataActivity.class);
+                    editScreenIntent.putExtra("id",itemID);
+                    editScreenIntent.putExtra("name",name);
+                    startActivity(editScreenIntent);
+                }
+                else{
+                    toastMessage("No ID associated with that name");
+                }
+            }
+        });
     }
 
+    /**
+     * customizable toast
+     * @param message
+     */
+    private void toastMessage(String message){
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
 }
