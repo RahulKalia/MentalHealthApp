@@ -15,7 +15,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
 
     EditText etName,etOccupation, etActivitiesPlayed, etAge, etNumTimesWeekPlayed, etStartDND, etEndDND;
 
-    UserLocalStore localStore;
+    DatabaseHelper mDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,21 +32,21 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
         bUpdate = (Button) findViewById(R.id.bUpdate);
         bUpdate.setOnClickListener(this);
 
-        localStore = new UserLocalStore(getApplicationContext());
+        mDatabaseHelper = new DatabaseHelper(this);
 
         displayUserDetails();
 
     }
 
+
     private void displayUserDetails(){
-        User user = localStore.getUser();
-        ((EditText)findViewById(R.id.etName)).setText(user.name.toString());
-        ((EditText)findViewById(R.id.etOccupation)).setText(user.occupation.toString());
-        ((EditText)findViewById(R.id.etActivitiesPlayed)).setText(user.activitiesPlayed.toString());
-        ((EditText)findViewById(R.id.etAge)).setText(Integer.toString(user.age));
-        ((EditText)findViewById(R.id.etNumTimesWeekPlayed)).setText(Integer.toString(user.numTimesWeekPlayed));
-        ((EditText)findViewById(R.id.etStartDND)).setText(Integer.toString(user.startDoNotDisturb));
-        ((EditText)findViewById(R.id.etEndDND)).setText(Integer.toString(user.endDoNotDisturb));
+        ((EditText)findViewById(R.id.etName)).setText(mDatabaseHelper.getColumn("name"));
+        ((EditText)findViewById(R.id.etOccupation)).setText(mDatabaseHelper.getColumn("occupation"));
+        ((EditText)findViewById(R.id.etActivitiesPlayed)).setText(mDatabaseHelper.getColumn("activitiesPlayed"));
+        ((EditText)findViewById(R.id.etAge)).setText(mDatabaseHelper.getColumn("age"));
+        ((EditText)findViewById(R.id.etNumTimesWeekPlayed)).setText(mDatabaseHelper.getColumn("numTimesPlayedPerWeek"));
+        ((EditText)findViewById(R.id.etStartDND)).setText(mDatabaseHelper.getColumn("startDND"));
+        ((EditText)findViewById(R.id.etEndDND)).setText(mDatabaseHelper.getColumn("endDND"));
     }
 
     @Override
@@ -62,12 +62,8 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
                 int startDND = Integer.parseInt(etStartDND.getText().toString());
                 int endDND = Integer.parseInt(etEndDND.getText().toString());
 
-                User registeredData = new User(name, occupation, activitiesPlayed, age, numTimesWeekPlayed, startDND, endDND);
+                mDatabaseHelper.updateUserTable(name, occupation, activitiesPlayed, age, numTimesWeekPlayed, startDND, endDND);
 
-
-                localStore.storeUserData(registeredData);
-
-                localStore.setUserCreated(true);
 
                 Toast.makeText(getApplicationContext(),"Success - user has been updated.",Toast.LENGTH_SHORT).show();
         }

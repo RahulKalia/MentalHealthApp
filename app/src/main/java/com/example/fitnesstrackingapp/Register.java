@@ -16,7 +16,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     EditText etName,etOccupation, etActivitiesPlayed, etAge, etNumTimesWeekPlayed, etStartDND, etEndDND;
 
-    UserLocalStore localStore;
+    UserLocalStore localStore; // TO DELETE
+
+    private static final String TAG = "Register";
+
+    DatabaseHelper mDatabaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         bSave = (Button) findViewById(R.id.bSave);
         bSave.setOnClickListener(this);
 
-        localStore = new UserLocalStore(getApplicationContext());
+        mDatabaseHelper = new DatabaseHelper(this);
+
+        localStore = new UserLocalStore(getApplicationContext()); // TO DELETE
     }
 
     @Override
@@ -42,7 +48,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         switch(v.getId()){
             case R.id.bSave:
 
-                if (validate() == true){
+              /*  if (validate() == true){
                     String name = etName.getText().toString();
                     String occupation = etOccupation.getText().toString();
                     String activitiesPlayed = etActivitiesPlayed.getText().toString();
@@ -65,6 +71,35 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }else{
                     Toast.makeText(getApplicationContext(),"Error - please complete all fields.",Toast.LENGTH_SHORT).show();
+                }*/
+
+
+                if (validate() == true) {
+                    String name = etName.getText().toString();
+                    String occupation = etOccupation.getText().toString();
+                    String activitiesPlayed = etActivitiesPlayed.getText().toString();
+
+                    int age = Integer.parseInt(etAge.getText().toString());
+                    int numTimesWeekPlayed = Integer.parseInt(etNumTimesWeekPlayed.getText().toString());
+                    int startDND = Integer.parseInt(etStartDND.getText().toString());
+                    int endDND = Integer.parseInt(etEndDND.getText().toString());
+
+
+
+                    // BELOW TO BE COMPLETED - ADAPT TO FIT CURRENT INPUT STRUCTURE
+                    mDatabaseHelper.addData("user_table","name",name);
+                    mDatabaseHelper.addData("user_table","occupation",occupation);
+                    mDatabaseHelper.addData("user_table","activitiesPlayed",activitiesPlayed);
+                    mDatabaseHelper.addData("user_table","age",age);
+                    mDatabaseHelper.addData("user_table","numTimesPlayedPerWeek",numTimesWeekPlayed);
+                    mDatabaseHelper.addData("user_table", "startDND", startDND);
+                    mDatabaseHelper.addData("user_table", "endDND", endDND);
+
+                    toastMessage("Data Successfully Inserted!");
+
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                } else {
+                    toastMessage("You must put something in the text field!");
                 }
         }
     }
@@ -104,5 +139,24 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             result = true;
         }
         return result;
+    }
+
+    /*public void AddData(String newEntry) {
+        boolean insertData = mDatabaseHelper.addData(newEntry);
+
+        if (insertData) {
+            toastMessage("Data Successfully Inserted!");
+        } else {
+            toastMessage("Something went wrong");
+        }
+    }/
+
+    /**
+     * customizable toast
+     * @param message
+     */
+
+    private void toastMessage(String message){
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
 }

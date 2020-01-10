@@ -55,7 +55,7 @@ public class EditDataActivity extends AppCompatActivity implements View.OnClickL
             case R.id.bSaveChange:
                 String item = etItem.getText().toString();
                 if(!item.equals("")){
-                    mDatabaseHelper.updateName(item,selectedID,selectedName);
+                    //mDatabaseHelper.updateName(item,selectedID,selectedName);
                     toastMessage("Success!");
                 }else{
                     toastMessage("You must enter a name");
