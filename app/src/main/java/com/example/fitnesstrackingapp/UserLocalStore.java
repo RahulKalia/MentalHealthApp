@@ -26,6 +26,7 @@ public class UserLocalStore {
         setUserCreated(true);
 
         spEditor.commit();
+        Log.d("FYP", "Successfully committed");
     }
 
     // Method gets the user from the Shared Preferences userLocalDatabase.

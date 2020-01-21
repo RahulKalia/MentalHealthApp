@@ -50,7 +50,7 @@ public class test extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void AddData(String newEntry) {
-        /*boolean insertData = mDatabaseHelper.addData(newEntry);
+        /*boolean insertData = mDatabaseHelper.addRegisterData(newEntry);
 
         if (insertData) {
             toastMessage("Data Successfully Inserted!");
