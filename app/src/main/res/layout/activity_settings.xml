@@ -42,16 +42,30 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Age" />
-    <EditText
-        android:id="@+id/etAge"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:inputType="number" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="87dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:layout_marginRight="3dp"
+            android:text="DOB"
+            android:textSize="16pt" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="255dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="right"
+            android:layout_marginEnd="-10dp"
+            android:layout_marginBottom="20dp"
+            android:hint="Select"
+            android:textSize="16pt" />
+
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"

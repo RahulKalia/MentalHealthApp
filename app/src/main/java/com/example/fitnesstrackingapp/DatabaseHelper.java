@@ -21,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL2 = "name",
                 COL3 = "occupation",
                 COL4 = "activitiesPlayed",
-                COL5 = "age",
+                COL5 = "DOB",
                 COL6 = "numTimesPlayedPerWeek",
                 COL7 = "startDND",
                 COL8 = "endDND"; //Necessary ?
@@ -37,7 +37,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 FeedEntry.COL2 +" TEXT, " +
                 FeedEntry.COL3 +" TEXT, " +
                 FeedEntry.COL4 +" TEXT, " +
-                FeedEntry.COL5 +" INTEGER, " +
+                FeedEntry.COL5 +" TEXT, " +
                 FeedEntry.COL6 +" INTEGER, " +
                 FeedEntry.COL7 +" INTEGER, " +
                 FeedEntry.COL8 +" INTEGER)";
@@ -51,21 +51,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // For String items
-    public boolean addRegisterData(String tableName, String name, String occupation, String activPlayed, Integer age, Integer numTimePlay, Integer startDND, Integer endDND) {
+    public boolean addRegisterData(String tableName, String name, String occupation, String activPlayed, String DOB, Integer numTimePlay, Integer startDND, Integer endDND) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(FeedEntry.COL2, name);
         contentValues.put(FeedEntry.COL3, occupation);
         contentValues.put(FeedEntry.COL4, activPlayed);
-        contentValues.put(FeedEntry.COL5, age);
+        contentValues.put(FeedEntry.COL5, DOB);
         contentValues.put(FeedEntry.COL6, numTimePlay);
         contentValues.put(FeedEntry.COL7, startDND);
         contentValues.put(FeedEntry.COL8, endDND);
 
 
         Log.d(TAG, "addRegisterData: Adding " +
-                name + occupation + activPlayed + age + numTimePlay + startDND + endDND +" to " + tableName);
+                name + occupation + activPlayed + DOB + numTimePlay + startDND + endDND +" to " + tableName);
 
         long result = db.insert(tableName, null, contentValues);
 
@@ -102,17 +102,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param newName
      * @param occupation
      * @param activitiesPlayed
-     * @param age
+     * @param dob
      * @param numTimesPlayedPerWeek
      * @param startDND
      * @param endDND
      */
-    public void updateUserTable(String newName, String occupation, String activitiesPlayed, int age, int numTimesPlayedPerWeek, int startDND, int endDND){
+    public void updateUserTable(String newName, String occupation, String activitiesPlayed, String dob, int numTimesPlayedPerWeek, int startDND, int endDND){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + FeedEntry.userTable + " SET " + FeedEntry.COL2 + " = '" + newName + "',"
                                                         +FeedEntry.COL3 + " = '" + occupation + "',"
                                                         +FeedEntry.COL4 + " = '" + activitiesPlayed+ "',"
-                                                        +FeedEntry.COL5 + " = " + age + ","
+                                                        +FeedEntry.COL5 + " = '" + dob + "',"
                                                         +FeedEntry.COL6 + " = " + numTimesPlayedPerWeek + ","
                                                         +FeedEntry.COL7 + " = " + startDND + ","
                                                         +FeedEntry.COL8 + " = " + endDND
