@@ -17,14 +17,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static class FeedEntry {
         // Creating the table below
         private static final String userTable = "user_table",
-                COL1 = "ID",
+                COL1 = "UID",
                 COL2 = "name",
                 COL3 = "occupation",
-                COL4 = "activitiesPlayed",
-                COL5 = "DOB",
-                COL6 = "numTimesPlayedPerWeek",
-                COL7 = "startDND",
-                COL8 = "endDND"; //Necessary ?
+                //COL4 = "activitiesPlayed",
+                COL4 = "DOB",
+                COL5 = "activityLevel";
+                //COL6 = "numTimesPlayedPerWeek",
+                //COL7 = "startDND",
+                //COL8 = "endDND"; //Necessary ?
+
+
     }
 
     public DatabaseHelper(Context context){
@@ -33,15 +36,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + FeedEntry.userTable + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+
+        // Creating the userTable
+        String createTable = "CREATE TABLE " + FeedEntry.userTable + " ( UID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 FeedEntry.COL2 +" TEXT, " +
                 FeedEntry.COL3 +" TEXT, " +
                 FeedEntry.COL4 +" TEXT, " +
-                FeedEntry.COL5 +" TEXT, " +
-                FeedEntry.COL6 +" INTEGER, " +
-                FeedEntry.COL7 +" INTEGER, " +
-                FeedEntry.COL8 +" INTEGER)";
+                FeedEntry.COL5 +" TEXT)" ;
+                //FeedEntry.COL6 +" INTEGER, " +
+                //FeedEntry.COL7 +" INTEGER, " +
+                //FeedEntry.COL8 +" INTEGER)";
         db.execSQL(createTable);
+
+
     }
 
     @Override
@@ -51,21 +58,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // For String items
-    public boolean addRegisterData(String tableName, String name, String occupation, String activPlayed, String DOB, Integer numTimePlay, Integer startDND, Integer endDND) {
+    public boolean addRegisterData(String tableName, String name, String occupation, String DOB, String activityLevel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(FeedEntry.COL2, name);
         contentValues.put(FeedEntry.COL3, occupation);
-        contentValues.put(FeedEntry.COL4, activPlayed);
-        contentValues.put(FeedEntry.COL5, DOB);
-        contentValues.put(FeedEntry.COL6, numTimePlay);
-        contentValues.put(FeedEntry.COL7, startDND);
-        contentValues.put(FeedEntry.COL8, endDND);
+        contentValues.put(FeedEntry.COL4, DOB);
+        contentValues.put(FeedEntry.COL5, activityLevel);
+        //contentValues.put(FeedEntry.COL6, numTimePlay);
+        //contentValues.put(FeedEntry.COL7, startDND);
+        //contentValues.put(FeedEntry.COL8, endDND);
 
 
         Log.d(TAG, "addRegisterData: Adding " +
-                name + occupation + activPlayed + DOB + numTimePlay + startDND + endDND +" to " + tableName);
+                name + occupation + DOB + activityLevel +" to " + tableName);
 
         long result = db.insert(tableName, null, contentValues);
 
@@ -101,21 +108,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Updates all fields in userTable
      * @param newName
      * @param occupation
-     * @param activitiesPlayed
      * @param dob
-     * @param numTimesPlayedPerWeek
-     * @param startDND
-     * @param endDND
+     * @param activityLevel
      */
-    public void updateUserTable(String newName, String occupation, String activitiesPlayed, String dob, int numTimesPlayedPerWeek, int startDND, int endDND){
+    public void updateUserTable(String newName, String occupation, String activityLevel, String dob){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + FeedEntry.userTable + " SET " + FeedEntry.COL2 + " = '" + newName + "',"
                                                         +FeedEntry.COL3 + " = '" + occupation + "',"
-                                                        +FeedEntry.COL4 + " = '" + activitiesPlayed+ "',"
-                                                        +FeedEntry.COL5 + " = '" + dob + "',"
-                                                        +FeedEntry.COL6 + " = " + numTimesPlayedPerWeek + ","
-                                                        +FeedEntry.COL7 + " = " + startDND + ","
-                                                        +FeedEntry.COL8 + " = " + endDND
+                                                        +FeedEntry.COL4 + " = '" + dob+ "',"
+                                                        +FeedEntry.COL5 + " = '" + activityLevel + "',"
                                                         +" WHERE " + FeedEntry.COL1 + " = " + '1'  ; // only one user using application so userId will always be 1
         Log.d(TAG, "updateUserTable: query: " + query);
         db.execSQL(query);
