@@ -35,9 +35,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Activities Played" />
+        android:text="How active are you?" />
     <EditText
-        android:id="@+id/etActivitiesPlayed"
+        android:id="@+id/etActivityLevel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"/>
@@ -66,39 +66,6 @@
             android:textSize="16pt" />
 
     </RelativeLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Number of Times Played per Week" />
-    <EditText
-        android:id="@+id/etNumTimesWeekPlayed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:inputType="number" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Start time of Do Not Disturb period" />
-    <EditText
-        android:id="@+id/etStartDND"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:inputType="time" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="End time of Do not Disturb period" />
-    <EditText
-        android:id="@+id/etEndDND"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:inputType="time" />
 
     <Button
         android:id="@+id/bUpdate"

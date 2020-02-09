@@ -113,10 +113,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public void updateUserTable(String newName, String occupation, String activityLevel, String dob){
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE " + FeedEntry.userTable + " SET " + FeedEntry.COL2 + " = '" + newName + "',"
+        String query = "UPDATE " + "user_table" + " SET " + FeedEntry.COL2 + " = '" + newName + "',"
                                                         +FeedEntry.COL3 + " = '" + occupation + "',"
                                                         +FeedEntry.COL4 + " = '" + dob+ "',"
-                                                        +FeedEntry.COL5 + " = '" + activityLevel + "',"
+                                                        +FeedEntry.COL5 + " = '" + activityLevel + "'"
                                                         +" WHERE " + FeedEntry.COL1 + " = " + '1'  ; // only one user using application so userId will always be 1
         Log.d(TAG, "updateUserTable: query: " + query);
         db.execSQL(query);

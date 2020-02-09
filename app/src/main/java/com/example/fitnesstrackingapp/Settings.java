@@ -31,7 +31,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
 
     Button bUpdate;
 
-    EditText etName,etOccupation, etActivitiesPlayed, etAge, etNumTimesWeekPlayed, etStartDND, etEndDND;
+    EditText etName,etOccupation, etActivityLevel;
 
     TextView tvDate;
 
@@ -45,10 +45,10 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_settings);
         etName = (EditText) findViewById(R.id.etName);
         etOccupation = (EditText) findViewById(R.id.etOccupation);
-        etActivitiesPlayed = (EditText) findViewById(R.id.etActivitiesPlayed);
-        etNumTimesWeekPlayed = (EditText) findViewById(R.id.etNumTimesWeekPlayed);
-        etStartDND = (EditText) findViewById(R.id.etStartDND);
-        etEndDND = (EditText) findViewById(R.id.etEndDND);
+        etActivityLevel = (EditText) findViewById(R.id.etActivityLevel);
+        //etNumTimesWeekPlayed = (EditText) findViewById(R.id.etNumTimesWeekPlayed);
+        //etStartDND = (EditText) findViewById(R.id.etStartDND);
+        //etEndDND = (EditText) findViewById(R.id.etEndDND);
 
         tvDate = (TextView) findViewById(R.id.tvDate);
         tvDate.setOnClickListener(this);
@@ -104,16 +104,16 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
         String name = listData.get(0);
         ((EditText)findViewById(R.id.etOccupation)).setText(mDatabaseHelper.getColumn("occupation"));
         String occ = mDatabaseHelper.getColumn("occupation");
-        ((EditText)findViewById(R.id.etActivitiesPlayed)).setText(mDatabaseHelper.getColumn("activitiesPlayed"));
-        String ap = mDatabaseHelper.getColumn("activitiesPlayed");
         ((TextView)findViewById(R.id.tvDate)).setText(mDatabaseHelper.getColumn("DOB"));
-        String dob = mDatabaseHelper.getColumn("DOB");
-        ((EditText)findViewById(R.id.etNumTimesWeekPlayed)).setText(mDatabaseHelper.getColumn("numTimesPlayedPerWeek"));
-        String ntppw = mDatabaseHelper.getColumn("numTimesPlayedPerWeek");
-        ((EditText)findViewById(R.id.etStartDND)).setText(mDatabaseHelper.getColumn("startDND"));
-        String startDND = mDatabaseHelper.getColumn("startDND");
-        ((EditText)findViewById(R.id.etEndDND)).setText(mDatabaseHelper.getColumn("endDND"));
-        String end = mDatabaseHelper.getColumn("endDND"); //This string lines can be deleted
+        String dob = mDatabaseHelper.getColumn("name");
+        ((EditText)findViewById(R.id.etActivityLevel)).setText(mDatabaseHelper.getColumn("activityLevel"));
+        String al = mDatabaseHelper.getColumn("activityLevel");
+//        ((EditText)findViewById(R.id.etNumTimesWeekPlayed)).setText(mDatabaseHelper.getColumn("numTimesPlayedPerWeek"));
+//        String ntppw = mDatabaseHelper.getColumn("numTimesPlayedPerWeek");
+//        ((EditText)findViewById(R.id.etStartDND)).setText(mDatabaseHelper.getColumn("startDND"));
+//        String startDND = mDatabaseHelper.getColumn("startDND");
+//        ((EditText)findViewById(R.id.etEndDND)).setText(mDatabaseHelper.getColumn("endDND"));
+//        String end = mDatabaseHelper.getColumn("endDND"); //This string lines can be deleted
     }
 
     @Override
@@ -122,14 +122,14 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
             case R.id.bUpdate:
                 String name = etName.getText().toString();
                 String occupation = etOccupation.getText().toString();
-                String activitiesPlayed = etActivitiesPlayed.getText().toString();
+                String activityLevel = etActivityLevel.getText().toString();
                 String DOB = tvDate.getText().toString();
 
-                int numTimesWeekPlayed = Integer.parseInt(etNumTimesWeekPlayed.getText().toString());
-                int startDND = Integer.parseInt(etStartDND.getText().toString());
-                int endDND = Integer.parseInt(etEndDND.getText().toString());
+//                int numTimesWeekPlayed = Integer.parseInt(etNumTimesWeekPlayed.getText().toString());
+//                int startDND = Integer.parseInt(etStartDND.getText().toString());
+//                int endDND = Integer.parseInt(etEndDND.getText().toString());
 
-                mDatabaseHelper.updateUserTable(name, occupation, activitiesPlayed, DOB, numTimesWeekPlayed, startDND, endDND);
+                mDatabaseHelper.updateUserTable(name, occupation, activityLevel, DOB);
 
 
                 Toast.makeText(getApplicationContext(),"Success - user has been updated.",Toast.LENGTH_SHORT).show();

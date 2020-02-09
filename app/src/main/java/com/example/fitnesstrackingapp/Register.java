@@ -31,7 +31,7 @@ import java.util.Calendar;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
     Button bSave;
-    EditText etName,etOccupation, etActivitiesPlayed, etNumTimesWeekPlayed, etStartDND, etEndDND;
+    EditText etName,etOccupation, etActivityLevel, etNumTimesWeekPlayed, etStartDND, etEndDND;
     private TextView mDisplayDate, tvDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private static final String TAG = "Register";
@@ -44,10 +44,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
         etName = (EditText) findViewById(R.id.etName);
         etOccupation = (EditText) findViewById(R.id.etOccupation);
-        etActivitiesPlayed = (EditText) findViewById(R.id.etActivitiesPlayed);
-        etNumTimesWeekPlayed = (EditText) findViewById(R.id.etNumTimesWeekPlayed);
-        etStartDND = (EditText) findViewById(R.id.etStartDND);
-        etEndDND = (EditText) findViewById(R.id.etEndDND);
+        etActivityLevel = (EditText) findViewById(R.id.etActivityLevel);
+        //etNumTimesWeekPlayed = (EditText) findViewById(R.id.etNumTimesWeekPlayed);
+        //etStartDND = (EditText) findViewById(R.id.etStartDND);
+        //etEndDND = (EditText) findViewById(R.id.etEndDND);
 
         mDisplayDate = (TextView) findViewById(R.id.tvDate);
         tvDate = (TextView) findViewById(R.id.tvDate);
@@ -94,17 +94,17 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 if (validate() == true) {
                     String name = etName.getText().toString();
                     String occupation = etOccupation.getText().toString();
-                    String activitiesPlayed = etActivitiesPlayed.getText().toString();
+                    String activityLevel = etActivityLevel.getText().toString();
                     String dob = mDisplayDate.getText().toString();
 
-                    int numTimesWeekPlayed = Integer.parseInt(etNumTimesWeekPlayed.getText().toString());
-                    int startDND = Integer.parseInt(etStartDND.getText().toString());
-                    int endDND = Integer.parseInt(etEndDND.getText().toString());
+                    //int numTimesWeekPlayed = Integer.parseInt(etNumTimesWeekPlayed.getText().toString());
+                    //int startDND = Integer.parseInt(etStartDND.getText().toString());
+                    //int endDND = Integer.parseInt(etEndDND.getText().toString());
 
 
                     // BELOW TO BE COMPLETED - ADAPT TO FIT CURRENT INPUT STRUCTURE
-                    mDatabaseHelper.addRegisterData("user_table", name, occupation, activitiesPlayed, dob, numTimesWeekPlayed, startDND, endDND);
-                    Log.d(TAG, "onClick: save " + name+ occupation+ activitiesPlayed+ dob+  numTimesWeekPlayed+ startDND + endDND);
+                    mDatabaseHelper.addRegisterData("user_table", name, occupation, dob, activityLevel);
+                    Log.d(TAG, "onClick: save " + name+ occupation+ activityLevel+ dob);
                     toastMessage("Data Successfully Inserted!");
 
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -128,10 +128,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     public boolean validate(){
         String sName = etName.getText().toString();
         String sOccupation = etOccupation.getText().toString();
-        String sActivitiesPlayed = etActivitiesPlayed.getText().toString();
-        String iNumTimesWeek = etNumTimesWeekPlayed.getText().toString();
-        String iStartDND = etStartDND.getText().toString();
-        String iEndDND= etEndDND.getText().toString();
+        String sActivityLevel = etActivityLevel.getText().toString();
+//        String iNumTimesWeek = etNumTimesWeekPlayed.getText().toString();
+//        String iStartDND = etStartDND.getText().toString();
+//        String iEndDND= etEndDND.getText().toString();
         boolean result = false;
 
         if (sName.isEmpty()) {
@@ -140,23 +140,25 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         if (sOccupation.isEmpty()) {
             etOccupation.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
         }
-        if (sActivitiesPlayed.isEmpty()) {
-            etActivitiesPlayed.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+        if (sActivityLevel.isEmpty()) {
+            etActivityLevel.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
         }
-        if (iNumTimesWeek.isEmpty() ) {
-            etNumTimesWeekPlayed.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
-        }
+//        if (iNumTimesWeek.isEmpty() ) {
+//            etNumTimesWeekPlayed.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+//        }
         if (tvDate.getText() == "Select"){
             tvDate.setTextColor(00); //FIX THIS
-        }
-        if (iStartDND.isEmpty() ) {
-            etStartDND.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
-        }
-        if (iEndDND.isEmpty()) {
-            etEndDND.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
         }else{
-            result = true;
+            return true;
         }
+        //if (iStartDND.isEmpty() ) {
+        //    etStartDND.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+        //}
+        //if (iEndDND.isEmpty()) {
+        //    etEndDND.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+        //}else{
+        //    result = true;
+        //}
         return result;
     }
 
