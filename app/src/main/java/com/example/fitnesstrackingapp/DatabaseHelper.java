@@ -28,6 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 //COL8 = "endDND"; //Necessary ?
 
 
+
     }
 
     public DatabaseHelper(Context context){
@@ -38,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         // Creating the userTable
-        String createTable = "CREATE TABLE " + FeedEntry.userTable + " ( UID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        String createUserTable = "CREATE TABLE " + FeedEntry.userTable + " ( UID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 FeedEntry.COL2 +" TEXT, " +
                 FeedEntry.COL3 +" TEXT, " +
                 FeedEntry.COL4 +" TEXT, " +
@@ -46,10 +47,63 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 //FeedEntry.COL6 +" INTEGER, " +
                 //FeedEntry.COL7 +" INTEGER, " +
                 //FeedEntry.COL8 +" INTEGER)";
-        db.execSQL(createTable);
+        db.execSQL(createUserTable);
 
+        // Creating the userStepsTable
+        String createUserStepsTable = "CREATE TABLE userStepsTable (\n" +
+                "  stepDate DATE, \n" +
+                "  quarterID INTEGER, \n" +
+                "  steps INTEGER,\n" +
+                "  UID INTEGER, \n" +
+                "  PRIMARY KEY (UID, stepDate, quarterID),\n" +
+                "  FOREIGN KEY (UID) REFERENCES user_table(UID)\n" +
+                ");" ;
+        db.execSQL(createUserStepsTable);
 
+        // Creating the Do Not Disturb Table
+        String createDNDTable = "" ;
+        db.execSQL(createUserStepsTable);
+
+        //code below = queries to create the rest of the tables through the DB executer
+        /*CREATE TABLE userStepsTable (
+  stepDate DATE,
+  quarterID INTEGER,
+  steps INTEGER,
+  UID INTEGER,
+  PRIMARY KEY (UID, stepDate, quarterID),
+  FOREIGN KEY (UID) REFERENCES user_table(UID)
+);
+
+CREATE TABLE userStepsTable (
+  stepDate DATE,
+  quarterID INTEGER,
+  steps INTEGER,
+  UID INTEGER,
+  PRIMARY KEY (UID, stepDate, quarterID),
+  FOREIGN KEY (UID) REFERENCES user_table(UID)
+);
+
+CREATE TABLE userMoodTable (
+  moodDate DATE,
+  quarterID INTEGER,
+  mood INTEGER,
+  UID INTEGER,
+  PRIMARY KEY (UID, moodDate, quarterID),
+  FOREIGN KEY (UID) REFERENCES user_table(UID)
+);
+
+CREATE TABLE userActivitiesTable (
+  AID INTEGER,
+  dayOfWeekPlayed INTEGER,
+  TimePlayed INTEGER, (can refer to quarterID),
+  intensityLevel INTEGER,
+  UID INTEGER,
+  PRIMARY KEY (UID, stepDate, quarterID),
+  FOREIGN KEY (UID) REFERENCES user_table(UID)
+);*/
     }
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
