@@ -20,15 +20,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL1 = "UID",
                 COL2 = "name",
                 COL3 = "occupation",
-                //COL4 = "activitiesPlayed",
                 COL4 = "DOB",
                 COL5 = "activityLevel";
-                //COL6 = "numTimesPlayedPerWeek",
-                //COL7 = "startDND",
-                //COL8 = "endDND"; //Necessary ?
-
-
-
     }
 
     public DatabaseHelper(Context context){
@@ -44,9 +37,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 FeedEntry.COL3 +" TEXT, " +
                 FeedEntry.COL4 +" TEXT, " +
                 FeedEntry.COL5 +" TEXT)" ;
-                //FeedEntry.COL6 +" INTEGER, " +
-                //FeedEntry.COL7 +" INTEGER, " +
-                //FeedEntry.COL8 +" INTEGER)";
         db.execSQL(createUserTable);
 
         // Creating the userStepsTable
@@ -60,50 +50,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ");" ;
         db.execSQL(createUserStepsTable);
 
-        // Creating the Do Not Disturb Table
-        String createDNDTable = "" ;
-        db.execSQL(createUserStepsTable);
+        // Creating the userMoodTable
+        String createUserMoodTable = "CREATE TABLE userMoodTable (\n" +
+                "  moodDate DATE,\n" +
+                "  quarterID INTEGER,\n" +
+                "  mood INTEGER,\n" + // Integer between 1 - 5
+                "  UID INTEGER,\n" +
+                "  PRIMARY KEY (UID, moodDate, quarterID),\n" +
+                "  FOREIGN KEY (UID) REFERENCES user_table(UID)\n" +
+                ");";
+        db.execSQL(createUserMoodTable);
 
-        //code below = queries to create the rest of the tables through the DB executer
-        /*CREATE TABLE userStepsTable (
-  stepDate DATE,
-  quarterID INTEGER,
-  steps INTEGER,
-  UID INTEGER,
-  PRIMARY KEY (UID, stepDate, quarterID),
-  FOREIGN KEY (UID) REFERENCES user_table(UID)
-);
+        // Creating Moods Array
+        String[] moods = {"Sad", "Moderately Sad", "Not Sad nor Happy", "Moderately Happy", "Happy"};
 
-CREATE TABLE userStepsTable (
-  stepDate DATE,
-  quarterID INTEGER,
-  steps INTEGER,
-  UID INTEGER,
-  PRIMARY KEY (UID, stepDate, quarterID),
-  FOREIGN KEY (UID) REFERENCES user_table(UID)
-);
+        // Creating the userActivitiesTable
+        String createUserActivitiesTable = "CREATE TABLE userActivitiesTable (\n" +
+                "  AID INTEGER, \n" +
+                "  dayOfWeekPlayed INTEGER, \n" +
+                "  TimePlayed INTEGER, \n" +
+                "  intensityLevel INTEGER,\n" +
+                "  UID INTEGER, \n" +
+                "  PRIMARY KEY (UID, AID),\n" +
+                "  FOREIGN KEY (UID) REFERENCES user_table(UID)\n" +
+                ");";
+        db.execSQL(createUserActivitiesTable);
 
-CREATE TABLE userMoodTable (
-  moodDate DATE,
-  quarterID INTEGER,
-  mood INTEGER,
-  UID INTEGER,
-  PRIMARY KEY (UID, moodDate, quarterID),
-  FOREIGN KEY (UID) REFERENCES user_table(UID)
-);
+        // Creating Intensity Array
+        String[] intensityLevels = {"Light", "Moderately Light", "Moderate", "Moderately Vigorous", "Vigorous"};
 
-CREATE TABLE userActivitiesTable (
-  AID INTEGER,
-  dayOfWeekPlayed INTEGER,
-  TimePlayed INTEGER, (can refer to quarterID),
-  intensityLevel INTEGER,
-  UID INTEGER,
-  PRIMARY KEY (UID, stepDate, quarterID),
-  FOREIGN KEY (UID) REFERENCES user_table(UID)
-);*/
+        // Creating DND Table for Do Not Disturb Times
+        String createUserDNDTable = "CREATE TABLE userDNDTable (\n" +
+                "  DNDID INTEGER, \n" +
+                "  day INTEGER, \n" +
+                "  DNDPeriods INTEGER,\n" + // 1 to 24 to represent hour in the day (E.g. 12 = 1200 - 1300 DND selected)
+                "  UID INTEGER,\n" +
+                "  PRIMARY KEY(DNDID),\n" +
+                "  FOREIGN KEY(UID) REFERENCES user_table(UID)\n" +
+                ");";
     }
-
-
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
