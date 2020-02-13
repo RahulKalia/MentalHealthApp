@@ -2,6 +2,9 @@ package com.example.fitnesstrackingapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,10 +15,8 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText etName;
     TextView textView ;
     Button bRegister, bSettings, bStepCounter , bTest;
-    static UserLocalStore localStore;
     DatabaseHelper mDatabaseHelper;
 
 
@@ -47,6 +48,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (authenticate() == true){
             displayUserDetails();
             bRegister.setVisibility(View.GONE);
+
+            // Start the step counter service and set an alarm for it to be activated every hour
+            AlarmManager scheduler = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(getApplicationContext(), StepLoggerService.class );
+            PendingIntent scheduledIntent = PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Set alarm to interval of one mintue for testing purposes - normally AlarmManager.INTERVAL_HOUR
+            long minute = 60 * 1000;
+            scheduler.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), minute, scheduledIntent);
+
         }else{
             startActivity(new Intent(this, Register.class));
         }
@@ -91,4 +102,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
+
 }

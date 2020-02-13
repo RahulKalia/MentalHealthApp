@@ -52,6 +52,10 @@ public class StepSensor extends AppCompatActivity implements SensorEventListener
     public void onSensorChanged(SensorEvent event) {
         if (running){
             tvSteps.setText(String.valueOf(event.values[0]));
+            long timestamp = event.timestamp;
+            float value = event.values[0];
+
+            // Do something with values - here we would store it to the database - need to create a function to store to the stuff
         }
     }
 

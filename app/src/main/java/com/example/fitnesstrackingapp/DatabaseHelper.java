@@ -8,10 +8,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.util.Date;
+
+import static java.sql.Types.INTEGER;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
+    Float stepCount;
 
     /* Inner class that defines the table contents */
     public static class FeedEntry {
@@ -43,7 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createUserStepsTable = "CREATE TABLE userStepsTable (\n" +
                 "  stepDate DATE, \n" +
                 "  quarterID INTEGER, \n" +
-                "  steps INTEGER,\n" +
+                "  steps FLOAT,\n" +
                 "  UID INTEGER, \n" +
                 "  PRIMARY KEY (UID, stepDate, quarterID),\n" +
                 "  FOREIGN KEY (UID) REFERENCES user_table(UID)\n" +
@@ -88,6 +93,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "  PRIMARY KEY(DNDID),\n" +
                 "  FOREIGN KEY(UID) REFERENCES user_table(UID)\n" +
                 ");";
+        db.execSQL(createUserDNDTable);
     }
 
     @Override
@@ -177,5 +183,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "deleteName: query: " + query);
         Log.d(TAG, "deleteName: Deleting " + name + " from database.");
         db.execSQL(query);
+    }
+
+    public boolean addStepCounterData(String date, int quarterID, float steps, int UID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("stepDate", date);
+        contentValues.put("quarterID", quarterID);
+        contentValues.put("steps", steps);
+        contentValues.put("UID", UID);
+
+
+        Log.d(TAG, "addRegisterData: Adding " +
+                date +" "+ quarterID +" "+ steps +" "+ UID +" to " + "userStepsTable");
+
+        long result = db.insert("userStepsTable", null, contentValues);
+
+        //if date as inserted incorrectly it will return -1
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void updateCurrentValue(float newVal){
+        stepCount = newVal;
+    }
+
+    // Pass in time as 24 hour four digit number and function returns quarter it is in
+    public int calculateQuarterID(char[] timeArr){
+        int time = 0;
+        // Arrives in format HH:MM -- converted to a 4 digit number for processing
+        for(int i=0; i < timeArr.length; i++){
+            if(i!= 2){
+                time = time *10;
+                time += Character.getNumericValue(timeArr[i]);
+            }
+        }
+
+        int quarterID = -1;
+        if (time < 1200){
+            if (time >= 800) quarterID = 3;
+            if (time >= 400 && time < 800) quarterID = 2;
+            else quarterID = 1;
+        }
+        if (time > 1200){
+            if (time <= 1600) quarterID = 4;
+            if (time <= 2000 && time > 1600) quarterID = 5;
+            else quarterID = 6;
+        }
+        else quarterID= 3;
+
+        return  quarterID;
+    }
+
+    public int getLastSteps(){
+        int item = -1;
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT steps FROM userStepsTable ORDER BY steps DESC LIMIT 1;" ;
+        try {
+            Cursor data = db.rawQuery(query,null);
+            while(data.moveToNext()){
+                item = data.getInt(3);
+            }
+            return item;
+        }catch (Exception se) {
+            Log.e(TAG, "getLastSteps: ", se);
+        }
+        return item;
     }
 }
