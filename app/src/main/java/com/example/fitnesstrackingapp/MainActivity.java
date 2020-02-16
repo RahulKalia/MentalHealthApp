@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Start the step counter service and set an alarm for it to be activated every hour
             AlarmManager scheduler = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(getApplicationContext(), StepLoggerService.class );
+            Intent savingIntent = new Intent(getApplicationContext(), StepLoggerService.class );
             PendingIntent scheduledIntent = PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // Set alarm to interval of one mintue for testing purposes - normally AlarmManager.INTERVAL_HOUR
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, StepSensor.class));
                 break;
             case R.id.bTest:
+                startActivity(new Intent(this, ChartDisplayer.class));
+                break;
 
         }
     }

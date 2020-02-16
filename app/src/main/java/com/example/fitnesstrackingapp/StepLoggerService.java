@@ -21,30 +21,23 @@ public class StepLoggerService extends Service implements SensorEventListener {
 
     private SensorManager sensorManager = null;
     private Sensor sensor = null;
-    float value = -1;
-    float previousStepCount = -1;
-    long timestp = 0;
+
     private static final String TAG = "StepLoggerService";
     DatabaseHelper mDatabaseHelper;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        Log.d(TAG, "onStartCommand started");
+
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         sensorManager.registerListener(this,sensor, SensorManager.SENSOR_DELAY_NORMAL);
         mDatabaseHelper = new DatabaseHelper(this);
 
-
-        Log.d(TAG, "Started this.");
-        Log.d(TAG, "value: " + value);
-
         Instant instant = Instant.now();
         long timeStampMillis = instant.toEpochMilli();
-
-        // NEED TO ADD THE DATABASE LOG HERE
-        addSteps(value, timeStampMillis);
-
+        
         return START_STICKY;
     }
 
@@ -59,20 +52,17 @@ public class StepLoggerService extends Service implements SensorEventListener {
         new SensorEventLoggerTask().execute(event);
 
         Log.d(TAG,"Current value inside: " +event.values[0]);
-        updateStepValues(event);
 
         // stop the service
         stopSelf();
     }
 
-    private class SensorEventLoggerTask extends
-            AsyncTask<SensorEvent, Void, Void> {
+    private class SensorEventLoggerTask extends AsyncTask<SensorEvent, Void, Void> {
         @Override
         protected Void doInBackground(SensorEvent... events) {
             SensorEvent event = events[0];
             // log the value
-            // Keep adding the values to the accumulator
-            value = event.values[0];
+            addSteps(event.values[0], event.timestamp);
             return null;
         }
     }
@@ -93,11 +83,7 @@ public class StepLoggerService extends Service implements SensorEventListener {
 
         int qt = mDatabaseHelper.calculateQuarterID(time);
 
-        Log.d(TAG,"Adding new record: " + dt +" " + qt +" " + value +" "+ 1);
-        mDatabaseHelper.addStepCounterData(dt, qt, value, 1);
-    }
-
-    public void updateStepValues(SensorEvent event){
-        value = event.values[0];
+        Log.d(TAG,"Adding new record: " + dt +" " + qt +" " + steps +" "+ 1);
+        mDatabaseHelper.addStepCounterData(dt, qt, steps, 1);
     }
 }
