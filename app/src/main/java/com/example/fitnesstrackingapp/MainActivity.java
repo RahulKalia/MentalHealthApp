@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView textView ;
@@ -38,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bTest.setOnClickListener(this);
 
         mDatabaseHelper = new DatabaseHelper(this);
-        //localStore = new UserLocalStore(this);
     }
 
     // On starting check if a user exists and if not redirect to the Register page.
@@ -76,12 +77,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return false;
     }
 
-    // Method to display User Details - only used if user has been authenticated to exist.
+    // Method to display Details - only used if user has been authenticated to exist.
     // TO BE CHANGED - additional features to be added here.
     private void displayUserDetails(){
-        //String name = localStore.getUser().name.toString();
-
-
         String name = mDatabaseHelper.getColumn("name");
         textView.setText(name);
 
@@ -100,7 +98,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, StepSensor.class));
                 break;
             case R.id.bTest:
-                startActivity(new Intent(this, ChartDisplayer.class));
+                //startActivity(new Intent(this, ChartDisplayer.class));
+                int stepsData  = mDatabaseHelper.getLastSteps();
                 break;
 
         }

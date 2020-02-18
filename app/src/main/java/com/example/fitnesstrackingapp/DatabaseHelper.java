@@ -7,11 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.lang.reflect.Field;
-import java.sql.SQLException;
-import java.util.Date;
+import java.util.ArrayList;
 
-import static java.sql.Types.INTEGER;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -81,7 +78,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ");";
         db.execSQL(createUserActivitiesTable);
 
-        // Creating Intensity Array
+        // Creating Intensity Array  ---- MOVE THIS TO BE HANDLED BY THE FRONT END
         String[] intensityLevels = {"Light", "Moderately Light", "Moderate", "Moderately Vigorous", "Vigorous"};
 
         // Creating DND Table for Do Not Disturb Times
@@ -102,7 +99,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // For String items
     public boolean addRegisterData(String tableName, String name, String occupation, String DOB, String activityLevel) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -215,8 +211,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Pass in time as 24 hour four digit number and function returns quarter it is in
     public int calculateQuarterID(char[] timeArr){
         int time = 0;
-        // Arrives in format HH:MM -- converted to a 4 digit number for processing
-        for(int i=0; i < timeArr.length; i++){
+        // Arrives in format HH:MM:SS.SSS -- converted to a 4 digit number for processing
+        for(int i=0; i < 5; i++){
             if(i!= 2){
                 time = time *10;
                 time += Character.getNumericValue(timeArr[i]);
@@ -226,32 +222,62 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int quarterID = -1;
         if (time < 1200){
             if (time >= 800) quarterID = 3;
-            if (time >= 400 && time < 800) quarterID = 2;
-            else quarterID = 1;
+
+            if (time >= 400 && time < 800) {
+                quarterID = 2;
+            }else {
+                quarterID = 1;
+            }
         }
+
         if (time > 1200){
             if (time <= 1600) quarterID = 4;
-            if (time <= 2000 && time > 1600) quarterID = 5;
-            else quarterID = 6;
+
+            if (time <= 2000 && time > 1600) {
+                quarterID = 5;
+            }
+            if (time > 2000 && time <= 2359){
+                quarterID = 6;
+            }
+        }else {
+            quarterID= 3;
         }
-        else quarterID= 3;
 
         return  quarterID;
     }
 
+    // Executes queries to get the last row of each quarter (the most up to date step count of each quarter)
+    // For all quarters after 1 will have to do Quarter(x+1) - Quarter(x) to get the steps for that period
+    // THIS IS WHERE YOU ARE ---- NEXT IS TO GET THIS WORKING
     public int getLastSteps(){
+        /*ArrayList<Integer> stepData = new ArrayList<Integer>();
         int item = -1;
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT steps FROM userStepsTable ORDER BY steps DESC LIMIT 1;" ;
+        String query = "SELECT steps FROM userStepsTable WHERE quarterID = 1 ORDER BY stepDate DESC LIMIT 1;" ;
         try {
             Cursor data = db.rawQuery(query,null);
             while(data.moveToNext()){
-                item = data.getInt(3);
+                item = data.getInt(1);
+                stepData.add(item);
+                Log.d(TAG, "getLastSteps: " +item);
             }
-            return item;
+            return stepData;
         }catch (Exception se) {
             Log.e(TAG, "getLastSteps: ", se);
         }
+        return stepData;*/
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT COUNT(steps) FROM userStepsTable WHERE quarterID = 1;" ;
+
+        Cursor data = db.rawQuery(query,null);
+        int item = 1;
+        while(data.moveToNext()){
+            item = data.getInt(0);
+            Log.d(TAG, ""+item);
+        }
+
         return item;
+
     }
 }

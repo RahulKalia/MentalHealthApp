@@ -13,8 +13,10 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.Instant;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class StepLoggerService extends Service implements SensorEventListener {
@@ -58,6 +60,7 @@ public class StepLoggerService extends Service implements SensorEventListener {
     }
 
     private class SensorEventLoggerTask extends AsyncTask<SensorEvent, Void, Void> {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         protected Void doInBackground(SensorEvent... events) {
             SensorEvent event = events[0];
@@ -72,15 +75,16 @@ public class StepLoggerService extends Service implements SensorEventListener {
         // Do nothing
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void addSteps(float steps, long timestamp){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDate dateNow = LocalDate.now();
+        LocalTime timeNow = LocalTime.now();
+
+        char[] time = timeNow.toString().toCharArray();
+        String dt = dateNow.toString();
 
         // Parsing char array to quarter calculator
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        char[] time = timeFormat.format(timestamp).toCharArray();
-        String dt = dateFormat.format(timestamp);
-
-
         int qt = mDatabaseHelper.calculateQuarterID(time);
 
         Log.d(TAG,"Adding new record: " + dt +" " + qt +" " + steps +" "+ 1);
