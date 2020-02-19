@@ -98,8 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, StepSensor.class));
                 break;
             case R.id.bTest:
-                //startActivity(new Intent(this, ChartDisplayer.class));
-                int stepsData  = mDatabaseHelper.getLastSteps();
+                startActivity(new Intent(this, ChartDisplayer.class));
                 break;
 
         }

@@ -43,11 +43,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Creating the userStepsTable
         String createUserStepsTable = "CREATE TABLE userStepsTable (\n" +
+                "  stepID INTEGER PRIMARY KEY AUTOINCREMENT,  \n" +
                 "  stepDate DATE, \n" +
                 "  quarterID INTEGER, \n" +
-                "  steps FLOAT,\n" +
+                "  steps INTEGER,\n" +
                 "  UID INTEGER, \n" +
-                "  PRIMARY KEY (UID, stepDate, quarterID),\n" +
                 "  FOREIGN KEY (UID) REFERENCES user_table(UID)\n" +
                 ");" ;
         db.execSQL(createUserStepsTable);
@@ -246,38 +246,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return  quarterID;
     }
 
-    // Executes queries to get the last row of each quarter (the most up to date step count of each quarter)
-    // For all quarters after 1 will have to do Quarter(x+1) - Quarter(x) to get the steps for that period
-    // THIS IS WHERE YOU ARE ---- NEXT IS TO GET THIS WORKING
-    public int getLastSteps(){
-        /*ArrayList<Integer> stepData = new ArrayList<Integer>();
-        int item = -1;
+    // Executes queries to get the count of the total number of steps in a given quarter
+    public ArrayList<Integer> getLastSteps(){
+        ArrayList<Integer> stepCount = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT steps FROM userStepsTable WHERE quarterID = 1 ORDER BY stepDate DESC LIMIT 1;" ;
-        try {
-            Cursor data = db.rawQuery(query,null);
-            while(data.moveToNext()){
-                item = data.getInt(1);
-                stepData.add(item);
-                Log.d(TAG, "getLastSteps: " +item);
+        Cursor data = null;
+        for (int i =0; i < 6; i++){
+            int item = 0;
+            //String query = "SELECT COUNT(*) FROM userStepsTable WHERE quarterID = " + i +";" ;
+            String query = "SELECT steps FROM userStepsTable WHERE quarterID ="+ i +" ORDER BY UID DESC LIMIT 1;";
+            data = db.rawQuery(query,null);
+
+
+            boolean inBounds = (i >= 0) && (data.getCount() >= 1);
+
+            if (inBounds){
+                data.moveToFirst();
+                item= data.getInt(0);
+                Integer iItem = new Integer(item);
+                stepCount.add(iItem);
+                Log.d(TAG, ""+item);
+            }else{
+                stepCount.add(0);
             }
-            return stepData;
-        }catch (Exception se) {
-            Log.e(TAG, "getLastSteps: ", se);
         }
-        return stepData;*/
+        data.close();
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        String query = "SELECT COUNT(steps) FROM userStepsTable WHERE quarterID = 1;" ;
 
-        Cursor data = db.rawQuery(query,null);
-        int item = 1;
-        while(data.moveToNext()){
-            item = data.getInt(0);
-            Log.d(TAG, ""+item);
-        }
-
-        return item;
+        return stepCount;
 
     }
 }
