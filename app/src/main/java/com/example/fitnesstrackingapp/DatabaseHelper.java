@@ -251,17 +251,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Integer> stepCount = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor data = null;
-        for (int i =0; i < 6; i++){
+        for (int i =1; i <=6; i++){
             int item = 0;
             //String query = "SELECT COUNT(*) FROM userStepsTable WHERE quarterID = " + i +";" ;
-            String query = "SELECT steps FROM userStepsTable WHERE quarterID ="+ i +" ORDER BY UID DESC LIMIT 1;";
+            String query = "SELECT steps FROM userStepsTable WHERE quarterID ="+ i +" ORDER BY stepID DESC LIMIT 1;";
             data = db.rawQuery(query,null);
 
 
             boolean inBounds = (i >= 0) && (data.getCount() >= 1);
 
             if (inBounds){
-                data.moveToFirst();
+                data.moveToNext();
                 item= data.getInt(0);
                 Integer iItem = new Integer(item);
                 stepCount.add(iItem);
