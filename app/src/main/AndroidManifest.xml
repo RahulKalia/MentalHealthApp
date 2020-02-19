@@ -18,11 +18,13 @@
         </activity>
 
 
-        <activity android:name=".Register" >
+        <activity android:name=".Register"
+            android:windowSoftInputMode="stateHidden">
             <!--Default Intent Filter-->
             <intent-filter>
                 <action android:name="android.intent.action.DEFAULT" />
             </intent-filter>
+
         </activity>
 
         <activity android:name=".Settings" >

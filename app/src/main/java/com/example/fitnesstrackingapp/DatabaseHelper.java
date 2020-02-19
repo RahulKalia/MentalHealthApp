@@ -5,8 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 
@@ -270,10 +275,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 stepCount.add(0);
             }
         }
+
         data.close();
 
-
         return stepCount;
-
     }
+
+    public Cursor getListContents(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = db.rawQuery("SELECT * FROM userStepsTable", null);
+        return data;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean saveMood(int moodSelection){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        LocalTime timeNow = LocalTime.now();
+        char[] time = timeNow.toString().toCharArray();
+        // Parsing char array to quarter calculator
+        int qt = calculateQuarterID(time);
+        LocalDate dateNow = LocalDate.now();
+        String dt = dateNow.toString();
+
+        contentValues.put("mood", moodSelection);
+        contentValues.put("moodDate", dt);
+        contentValues.put("quarterID", qt);
+        contentValues.put("UID", 1);
+
+
+
+
+        Log.d(TAG, "addRegisterData: Adding " +
+                moodSelection +" "+ qt +" "+ 1 +" to " + "userMoodTable");
+
+        long result = db.insert("userMoodTable", null, contentValues);
+
+        //if date as inserted incorrectly it will return -1
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
 }

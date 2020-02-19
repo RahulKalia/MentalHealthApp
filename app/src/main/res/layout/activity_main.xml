@@ -14,7 +14,27 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_gravity="left"
+        android:text="TextView"
+        android:textSize="20dp"/>
+
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical">
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="244dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:divider="#CCCCCC"
+        android:dividerHeight="1dp"
+        android:paddingLeft="2dp"></ListView>
+</RelativeLayout>
 
     <Button
         android:id="@+id/bRegister"
@@ -40,5 +60,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Test" />
+
+
+    <LinearLayout
+        android:id="@+id/LinearLayout02"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true">
+        <ImageButton
+            android:id="@+id/bVeryHappy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/ic_very_happy"
+            android:layout_weight="1" >
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/bHappy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_happy">
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/bNeutral"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_neutral">
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/bSad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_sad">
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/bVerySad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_very_sad">
+        </ImageButton>
+    </LinearLayout>
+
+
 
 </LinearLayout>

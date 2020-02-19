@@ -9,10 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +33,8 @@ import java.util.Calendar;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
     Button bSave;
-    EditText etName,etOccupation, etActivityLevel, etNumTimesWeekPlayed, etStartDND, etEndDND;
+    EditText etName,etOccupation, etActivityLevel;
+    Spinner dropdown;
     private TextView mDisplayDate, tvDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private static final String TAG = "Register";
@@ -45,9 +48,11 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         etName = (EditText) findViewById(R.id.etName);
         etOccupation = (EditText) findViewById(R.id.etOccupation);
         etActivityLevel = (EditText) findViewById(R.id.etActivityLevel);
-        //etNumTimesWeekPlayed = (EditText) findViewById(R.id.etNumTimesWeekPlayed);
-        //etStartDND = (EditText) findViewById(R.id.etStartDND);
-        //etEndDND = (EditText) findViewById(R.id.etEndDND);
+
+        dropdown = (Spinner) findViewById(R.id.spinner);
+        String[] spinnerItems = new String[]{"Very Active", "Moderately Active", "Lightly Active", "Sedentary"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerItems);
+        dropdown.setAdapter(adapter);
 
         mDisplayDate = (TextView) findViewById(R.id.tvDate);
         tvDate = (TextView) findViewById(R.id.tvDate);

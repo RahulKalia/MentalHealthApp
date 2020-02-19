@@ -1,25 +1,36 @@
 package com.example.fitnesstrackingapp;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
+import android.app.ListActivity;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     TextView textView ;
     Button bRegister, bSettings, bStepCounter , bTest;
+    ImageButton bVeryHappy, bHappy, bNeutral, bSad, bVerySad;
     DatabaseHelper mDatabaseHelper;
+    ListView listView;
 
 
     // When activity is created create the local store and set button on click listener.
@@ -32,12 +43,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bSettings = (Button) findViewById(R.id.bSettings);
         bStepCounter = (Button) findViewById(R.id.bStepCounter);
         bTest = (Button) findViewById(R.id.bTest);
+
+        bVeryHappy = (ImageButton) findViewById(R.id.bVeryHappy);
+        bHappy = (ImageButton) findViewById(R.id.bHappy);
+        bNeutral = (ImageButton) findViewById(R.id.bNeutral);
+        bSad = (ImageButton) findViewById(R.id.bSad);
+        bVerySad = (ImageButton) findViewById(R.id.bVerySad);
+
         textView = (TextView) findViewById(R.id.textView);
+
+        listView = (ListView) findViewById(R.id.listView);
 
         bSettings.setOnClickListener(this);
         bRegister.setOnClickListener(this);
         bStepCounter.setOnClickListener(this);
         bTest.setOnClickListener(this);
+        bVeryHappy.setOnClickListener(this);
+        bHappy.setOnClickListener(this);
+        bNeutral.setOnClickListener(this);
+        bSad.setOnClickListener(this);
+        bVerySad.setOnClickListener(this);
 
         mDatabaseHelper = new DatabaseHelper(this);
     }
@@ -48,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         if (authenticate() == true){
             displayUserDetails();
+            populateListView();
             bRegister.setVisibility(View.GONE);
 
             // Start the step counter service and set an alarm for it to be activated every hour
@@ -85,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -100,9 +127,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bTest:
                 startActivity(new Intent(this, ChartDisplayer.class));
                 break;
-
+            case  R.id.bVeryHappy:
+                saveMoodSelection(5);
+                break;
+            case  R.id.bHappy:
+                saveMoodSelection(4);
+                break;
+            case  R.id.bNeutral:
+                saveMoodSelection(3);
+                break;
+            case  R.id.bSad:
+                saveMoodSelection(2);
+                break;
+            case  R.id.bVerySad:
+                saveMoodSelection(1);
+                break;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void saveMoodSelection(int moodSelection) {
+        mDatabaseHelper.saveMood(moodSelection);
+    }
+
+    private void populateListView(){
+        ArrayList<String> listViewPopulate = new ArrayList<>();
+        Cursor data = mDatabaseHelper.getListContents();
+        if (data.getCount() == 0){
+            toastMessage("The database is empty.");
+        }else{
+            while(data.moveToNext()){
+                listViewPopulate.add(data.getString(1));
+                ListAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listViewPopulate);
+                listView.setAdapter(listAdapter);
+            }
+        }
+    }
+
+    private void toastMessage(String message){
+        Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
 
 }
