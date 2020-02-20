@@ -151,16 +151,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void populateListView(){
-        ArrayList<String> listViewPopulate = new ArrayList<>();
+        ArrayList<MoodItem> listViewPopulate = new ArrayList<>();
         Cursor data = mDatabaseHelper.getListContents();
         if (data.getCount() == 0){
             toastMessage("The database is empty.");
-        }else{
-            while(data.moveToNext()){
-                listViewPopulate.add(data.getString(1));
-                ListAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listViewPopulate);
-                listView.setAdapter(listAdapter);
+        }else {
+            // populate the list with list items
+            while (data.moveToNext()) {
+                MoodItem item = new MoodItem(data.getInt(0), data.getString(1));
+                listViewPopulate.add(item);
             }
+            TwoColumn_ListAdapter adapter = new TwoColumn_ListAdapter(this, R.layout.activity_main, listViewPopulate);
+            listView.setAdapter(adapter);
         }
     }
 

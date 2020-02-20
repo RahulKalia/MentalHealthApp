@@ -59,11 +59,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Creating the userMoodTable
         String createUserMoodTable = "CREATE TABLE userMoodTable (\n" +
-                "  moodDate DATE,\n" +
-                "  quarterID INTEGER,\n" +
-                "  mood INTEGER,\n" + // Integer between 1 - 5
-                "  UID INTEGER,\n" +
-                "  PRIMARY KEY (UID, moodDate, quarterID),\n" +
+                "  MID INTEGER PRIMARY KEY AUTOINCREMENT,  \n" +
+                "  moodDate DATE, \n" +
+                "  quarterID INTEGER, \n" +
+                "  mood INTEGER,\n" +
+                "  UID INTEGER, \n" +
                 "  FOREIGN KEY (UID) REFERENCES user_table(UID)\n" +
                 ");";
         db.execSQL(createUserMoodTable);
@@ -283,7 +283,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getListContents(){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM userStepsTable", null);
+        Cursor data = db.rawQuery("SELECT AVG(mood), moodDate FROM userMoodTable  GROUP BY moodDate;", null);
         return data;
     }
 
@@ -318,6 +318,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             return true;
         }
+    }
+
+    // Below has become redundant because of getListContents;
+    public Cursor averageDayMood(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor data = db.rawQuery(
+                "SELECT AVG(mood), moodDate FROM userMoodTable  GROUP BY moodDate;",
+                null);
+
+        return data;
     }
 
 
