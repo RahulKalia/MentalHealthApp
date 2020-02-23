@@ -281,9 +281,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return stepCount;
     }
 
+    // TO BE CHANGED
     public Cursor getListContents(){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT * FROM userStepsTable", null);
+        Cursor data = db.rawQuery
+                ("SELECT moodDate, AVG(mood) FROM userMoodTable  GROUP BY moodDate;", null);
         return data;
     }
 

@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onStart();
         if (authenticate() == true){
             displayUserDetails();
-            populateListView();
             bRegister.setVisibility(View.GONE);
+            populateListView();
 
             // Start the step counter service and set an alarm for it to be activated every hour
             AlarmManager scheduler = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // TO BE CHANGED - additional features to be added here.
     private void displayUserDetails(){
         String name = mDatabaseHelper.getColumn("name");
-        textView.setText(name);
+        textView.setText("Hi " + name + "!");
 
     }
 
@@ -150,16 +150,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDatabaseHelper.saveMood(moodSelection);
     }
 
-    private void populateListView(){
-        ArrayList<String> listViewPopulate = new ArrayList<>();
+
+   private void populateListView(){
+        ArrayList<layoutItem> listViewPopulate = new ArrayList<>();
         Cursor data = mDatabaseHelper.getListContents();
         if (data.getCount() == 0){
             toastMessage("The database is empty.");
         }else{
             while(data.moveToNext()){
-                listViewPopulate.add(data.getString(1));
-                ListAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listViewPopulate);
-                listView.setAdapter(listAdapter);
+                layoutItem item = new layoutItem(data.getString(0),data.getInt(1));
+
+                listViewPopulate.add(item);
+
+                ItemListAdapter adapter = new ItemListAdapter(this, R.layout.adapter_view_layout, listViewPopulate);
+                listView.setAdapter(adapter);
             }
         }
     }
