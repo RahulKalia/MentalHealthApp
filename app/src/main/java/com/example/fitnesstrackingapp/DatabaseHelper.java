@@ -320,16 +320,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Below has become redundant because of getListContents;
-    public Cursor averageDayMood(){
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor data = db.rawQuery(
-                "SELECT AVG(mood), moodDate FROM userMoodTable  GROUP BY moodDate;",
-                null);
-
-        return data;
-    }
-
 
 }
