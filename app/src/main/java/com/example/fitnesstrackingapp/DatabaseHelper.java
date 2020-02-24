@@ -59,11 +59,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Creating the userMoodTable
         String createUserMoodTable = "CREATE TABLE userMoodTable (\n" +
-                "  MID INTEGER PRIMARY KEY AUTOINCREMENT,  \n" +
-                "  moodDate DATE, \n" +
-                "  quarterID INTEGER, \n" +
-                "  mood INTEGER,\n" +
-                "  UID INTEGER, \n" +
+                "  moodDate DATE,\n" +
+                "  quarterID INTEGER,\n" +
+                "  mood INTEGER,\n" + // Integer between 1 - 5
+                "  UID INTEGER,\n" +
+                "  PRIMARY KEY (UID, moodDate, quarterID),\n" +
                 "  FOREIGN KEY (UID) REFERENCES user_table(UID)\n" +
                 ");";
         db.execSQL(createUserMoodTable);
@@ -160,10 +160,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void updateUserTable(String newName, String occupation, String activityLevel, String dob){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE " + "user_table" + " SET " + FeedEntry.COL2 + " = '" + newName + "',"
-                                                        +FeedEntry.COL3 + " = '" + occupation + "',"
-                                                        +FeedEntry.COL4 + " = '" + dob+ "',"
-                                                        +FeedEntry.COL5 + " = '" + activityLevel + "'"
-                                                        +" WHERE " + FeedEntry.COL1 + " = " + '1'  ; // only one user using application so userId will always be 1
+                +FeedEntry.COL3 + " = '" + occupation + "',"
+                +FeedEntry.COL4 + " = '" + dob+ "',"
+                +FeedEntry.COL5 + " = '" + activityLevel + "'"
+                +" WHERE " + FeedEntry.COL1 + " = " + '1'  ; // only one user using application so userId will always be 1
         Log.d(TAG, "updateUserTable: query: " + query);
         db.execSQL(query);
     }
@@ -281,9 +281,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return stepCount;
     }
 
+    // TO BE CHANGED
     public Cursor getListContents(){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery("SELECT AVG(mood), moodDate FROM userMoodTable  GROUP BY moodDate;", null);
+        Cursor data = db.rawQuery
+                ("SELECT moodDate, AVG(mood) FROM userMoodTable  GROUP BY moodDate;", null);
         return data;
     }
 

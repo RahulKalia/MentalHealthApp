@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-   private void populateListView(){
+    private void populateListView(){
         ArrayList<layoutItem> listViewPopulate = new ArrayList<>();
         Cursor data = mDatabaseHelper.getListContents();
         if (data.getCount() == 0){
