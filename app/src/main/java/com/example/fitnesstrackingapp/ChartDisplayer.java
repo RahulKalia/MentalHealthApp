@@ -1,5 +1,6 @@
 package com.example.fitnesstrackingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,7 +33,12 @@ public class ChartDisplayer extends AppCompatActivity {
         setContentView(R.layout.activity_chartdisplayer);
 
         graph = (GraphView) findViewById(R.id.graph);
-        ArrayList<Integer> stepCount = mDatabaseHelper.getLastSteps();
+
+        // Getting intent date
+        Intent intent = getIntent();
+        final String date = intent.getStringExtra("date");
+
+        ArrayList<Integer> stepCount = mDatabaseHelper.getLastSteps(date);
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[]{
                 new DataPoint(1, stepCount.get(0)),

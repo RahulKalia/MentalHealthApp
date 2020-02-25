@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bNeutral.setOnClickListener(this);
         bSad.setOnClickListener(this);
         bVerySad.setOnClickListener(this);
+
 
         mDatabaseHelper = new DatabaseHelper(this);
     }
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void populateListView(){
-        ArrayList<layoutItem> listViewPopulate = new ArrayList<>();
+        final ArrayList<layoutItem> listViewPopulate = new ArrayList<>();
         Cursor data = mDatabaseHelper.getListContents();
         if (data.getCount() == 0){
             toastMessage("The database is empty.");
@@ -162,8 +164,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 listViewPopulate.add(item);
 
-                ItemListAdapter adapter = new ItemListAdapter(this, R.layout.adapter_view_layout, listViewPopulate);
+                final ItemListAdapter adapter = new ItemListAdapter(this, R.layout.adapter_view_layout, listViewPopulate);
                 listView.setAdapter(adapter);
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(MainActivity.this, ChartDisplayer.class);
+                        TextView textView = (TextView) view.findViewById(R.id.tvDate);
+                        String s = listViewPopulate.get(position).getDate();
+                        intent.putExtra("date", s);
+                        startActivity(intent);
+                    }
+                });
             }
         }
     }

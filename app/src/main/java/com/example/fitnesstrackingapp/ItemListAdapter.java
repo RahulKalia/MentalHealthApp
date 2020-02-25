@@ -132,6 +132,11 @@ public class ItemListAdapter extends ArrayAdapter<layoutItem> {
         // END - UNIVERSAL IMAGE LOADER SETUP
     }
 
+    private String getItemDate(ViewHolder holder){
+        String date = holder.date.toString();
+        return date;
+    }
+
 
 
 
