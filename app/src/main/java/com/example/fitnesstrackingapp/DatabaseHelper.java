@@ -59,13 +59,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // Creating the userMoodTable
         String createUserMoodTable = "CREATE TABLE userMoodTable (\n" +
-                "  moodDate DATE,\n" +
-                "  quarterID INTEGER,\n" +
-                "  mood INTEGER,\n" + // Integer between 1 - 5
-                "  UID INTEGER,\n" +
-                "  PRIMARY KEY (UID, moodDate, quarterID),\n" +
+                "  MID INTEGER PRIMARY KEY AUTOINCREMENT,  \n" +
+                "  moodDate DATE, \n" +
+                "  quarterID INTEGER, \n" +
+                "  mood INTEGER,\n" +
+                "  UID INTEGER, \n" +
                 "  FOREIGN KEY (UID) REFERENCES user_table(UID)\n" +
-                ");";
+                ");\n";
         db.execSQL(createUserMoodTable);
 
         // Creating Moods Array

@@ -4,6 +4,7 @@ public class layoutItem {
 
     private int mood;
     private String date;
+    private String imgURL;
 
     public layoutItem(String date, int mood) {
         this.mood = mood;
@@ -25,4 +26,6 @@ public class layoutItem {
     public void setDate(String date) {
         this.date = date;
     }
+
+
 }
