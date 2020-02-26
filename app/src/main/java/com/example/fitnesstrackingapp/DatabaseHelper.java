@@ -49,7 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Creating the userStepsTable
         String createUserStepsTable = "CREATE TABLE userStepsTable (\n" +
                 "  stepID INTEGER PRIMARY KEY AUTOINCREMENT,  \n" +
-                "  stepDate DATE, \n" +
+                "  stepDate TEXT, \n" +
                 "  quarterID INTEGER, \n" +
                 "  steps INTEGER,\n" +
                 "  UID INTEGER, \n" +
@@ -200,6 +200,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 date +" "+ quarterID +" "+ steps +" "+ UID +" to " + "userStepsTable");
 
         long result = db.insert("userStepsTable", null, contentValues);
+        db.close();
 
         //if date as inserted incorrectly it will return -1
         if (result == -1) {
@@ -258,15 +259,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor data = null;
         for (int i =1; i <=6; i++){
             int item = 0;
-            String query = "SELECT steps FROM userStepsTable WHERE quarterID ="+ i +" AND stepDate = "+ dateOfSteps +" ORDER BY stepID DESC LIMIT 1;";
+            String query = "SELECT stepID, steps, stepDate FROM userStepsTable WHERE quarterID = "+i+" AND stepDate = '"+dateOfSteps+"' ORDER BY stepID DESC LIMIT 1;";
             data = db.rawQuery(query,null);
 
 
-            boolean inBounds = (i >= 0) && (data.getCount() >= 1);
+            boolean inBounds = data.getCount() >= 1;
 
             if (inBounds){
                 data.moveToNext();
-                item= data.getInt(0);
+                item= data.getInt(1);
                 Integer iItem = new Integer(item);
                 stepCount.add(iItem);
                 Log.d(TAG, ""+item);
@@ -312,7 +313,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 moodSelection +" "+ qt +" "+ 1 +" to " + "userMoodTable");
 
         long result = db.insert("userMoodTable", null, contentValues);
-
+        db.close();
         //if date as inserted incorrectly it will return -1
         if (result == -1) {
             return false;

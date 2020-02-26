@@ -89,5 +89,6 @@ public class StepLoggerService extends Service implements SensorEventListener {
 
         Log.d(TAG,"Adding new record: " + dt +" " + qt +" " + steps +" "+ 1);
         mDatabaseHelper.addStepCounterData(dt, qt, steps, 1);
+        
     }
 }
