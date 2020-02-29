@@ -7,10 +7,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +32,9 @@ import java.util.Date;
 public class Settings extends AppCompatActivity implements View.OnClickListener {
 
     Button bUpdate;
-
-    EditText etName,etOccupation, etActivityLevel;
-
+    EditText etName,etOccupation;
     TextView tvDate;
+    Spinner dropdown;
 
     DatabaseHelper mDatabaseHelper;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -45,10 +46,11 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
         setContentView(R.layout.activity_settings);
         etName = (EditText) findViewById(R.id.etName);
         etOccupation = (EditText) findViewById(R.id.etOccupation);
-        etActivityLevel = (EditText) findViewById(R.id.etActivityLevel);
-        //etNumTimesWeekPlayed = (EditText) findViewById(R.id.etNumTimesWeekPlayed);
-        //etStartDND = (EditText) findViewById(R.id.etStartDND);
-        //etEndDND = (EditText) findViewById(R.id.etEndDND);
+
+        dropdown = (Spinner) findViewById(R.id.spinner);
+        String[] spinnerItems = new String[]{"Very Active", "Moderately Active", "Lightly Active", "Sedentary"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, spinnerItems);
+        dropdown.setAdapter(adapter);
 
         tvDate = (TextView) findViewById(R.id.tvDate);
         tvDate.setOnClickListener(this);
@@ -92,28 +94,28 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
     private void displayUserDetails(){
         Cursor data  = mDatabaseHelper.getData();
 
-        ArrayList<String> listData = new ArrayList<>();
-
-        while(data.moveToNext()){
-            //get the value from the database in column 1 (which is name)
-            //then add it to the ArrayList
-            listData.add(data.getString(1));
-        }
-
         ((EditText)findViewById(R.id.etName)).setText(mDatabaseHelper.getColumn("name"));
-        String name = listData.get(0);
         ((EditText)findViewById(R.id.etOccupation)).setText(mDatabaseHelper.getColumn("occupation"));
-        String occ = mDatabaseHelper.getColumn("occupation");
         ((TextView)findViewById(R.id.tvDate)).setText(mDatabaseHelper.getColumn("DOB"));
-        String dob = mDatabaseHelper.getColumn("name");
-        ((EditText)findViewById(R.id.etActivityLevel)).setText(mDatabaseHelper.getColumn("activityLevel"));
-        String al = mDatabaseHelper.getColumn("activityLevel");
-//        ((EditText)findViewById(R.id.etNumTimesWeekPlayed)).setText(mDatabaseHelper.getColumn("numTimesPlayedPerWeek"));
-//        String ntppw = mDatabaseHelper.getColumn("numTimesPlayedPerWeek");
-//        ((EditText)findViewById(R.id.etStartDND)).setText(mDatabaseHelper.getColumn("startDND"));
-//        String startDND = mDatabaseHelper.getColumn("startDND");
-//        ((EditText)findViewById(R.id.etEndDND)).setText(mDatabaseHelper.getColumn("endDND"));
-//        String end = mDatabaseHelper.getColumn("endDND"); //This string lines can be deleted
+        String activity_level = mDatabaseHelper.getColumn("activityLevel");
+
+        switch (activity_level){
+            case "Very Active":
+                dropdown.setSelection(1);
+                break;
+            case "Moderately Active":
+                dropdown.setSelection(2);
+                break;
+            case "Lightly Active":
+                dropdown.setSelection(3);
+                break;
+            case "Sedentary":
+                dropdown.setSelection(4);
+                break;
+            default:
+                dropdown.setSelection(2);
+                break;
+        }
     }
 
     @Override
@@ -122,7 +124,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener 
             case R.id.bUpdate:
                 String name = etName.getText().toString();
                 String occupation = etOccupation.getText().toString();
-                String activityLevel = etActivityLevel.getText().toString();
+                String activityLevel = dropdown.getSelectedItem().toString();
                 String DOB = tvDate.getText().toString();
 
 //                int numTimesWeekPlayed = Integer.parseInt(etNumTimesWeekPlayed.getText().toString());

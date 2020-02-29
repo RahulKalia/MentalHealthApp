@@ -2,6 +2,8 @@ package com.example.fitnesstrackingapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.jjoe64.graphview.GraphView;
@@ -17,6 +19,7 @@ public class ChartDisplayer extends AppCompatActivity {
 
     DatabaseHelper mDatabaseHelper = new DatabaseHelper(this);
     GraphView graph;
+    TextView tvDetailedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +27,12 @@ public class ChartDisplayer extends AppCompatActivity {
         setContentView(R.layout.activity_detailed_day);
 
         graph = (GraphView) findViewById(R.id.graph);
-
+        tvDetailedDate = (TextView) findViewById(R.id.tvDetailedDate);
         // Getting intent date
         Intent intent = getIntent();
         final String date = intent.getStringExtra("date");
+        tvDetailedDate.setText("You are viewing:  " + date);
+
 
         ArrayList<Integer> stepCount = mDatabaseHelper.getLastSteps(date);
 

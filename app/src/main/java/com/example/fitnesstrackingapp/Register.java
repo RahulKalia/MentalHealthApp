@@ -2,9 +2,7 @@ package com.example.fitnesstrackingapp;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,16 +22,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.Period;
-import java.time.Year;
 import java.util.Date;
 import java.util.Calendar;
 
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
-    Button bSave;
-    EditText etName,etOccupation, etActivityLevel;
+    Button bNext;
+    EditText etName,etOccupation;
     Spinner dropdown;
     private TextView mDisplayDate, tvDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -47,7 +43,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
         etName = (EditText) findViewById(R.id.etName);
         etOccupation = (EditText) findViewById(R.id.etOccupation);
-        etActivityLevel = (EditText) findViewById(R.id.etActivityLevel);
 
         dropdown = (Spinner) findViewById(R.id.spinner);
         String[] spinnerItems = new String[]{"Very Active", "Moderately Active", "Lightly Active", "Sedentary"};
@@ -88,18 +83,18 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         };
 
 
-        bSave = (Button) findViewById(R.id.bSave);
-        bSave.setOnClickListener(this);
+        bNext = (Button) findViewById(R.id.bNext);
+        bNext.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.bSave:
+            case R.id.bNext:
                 if (validate() == true) {
                     String name = etName.getText().toString();
                     String occupation = etOccupation.getText().toString();
-                    String activityLevel = etActivityLevel.getText().toString();
+                    String activityLevel= dropdown.getSelectedItem().toString();
                     String dob = mDisplayDate.getText().toString();
 
                     //int numTimesWeekPlayed = Integer.parseInt(etNumTimesWeekPlayed.getText().toString());
@@ -133,7 +128,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     public boolean validate(){
         String sName = etName.getText().toString();
         String sOccupation = etOccupation.getText().toString();
-        String sActivityLevel = etActivityLevel.getText().toString();
+        String sActivityLevel = dropdown.getSelectedItem().toString();
 //        String iNumTimesWeek = etNumTimesWeekPlayed.getText().toString();
 //        String iStartDND = etStartDND.getText().toString();
 //        String iEndDND= etEndDND.getText().toString();
@@ -146,12 +141,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             etOccupation.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
         }
         if (sActivityLevel.isEmpty()) {
-            etActivityLevel.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
+            dropdown.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
         }
 //        if (iNumTimesWeek.isEmpty() ) {
 //            etNumTimesWeekPlayed.getBackground().mutate().setColorFilter(getResources().getColor(android.R.color.holo_red_light), PorterDuff.Mode.SRC_ATOP);
 //        }
-        if (tvDate.getText() == "Select"){
+        if (tvDate.getText() == ""){
             tvDate.setTextColor(00); //FIX THIS
         }else{
             return true;
@@ -170,4 +165,5 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private void toastMessage(String message){
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
+
 }

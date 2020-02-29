@@ -8,11 +8,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" /> -->
 
-   <com.jjoe64.graphview.GraphView
-       android:layout_marginTop="100dp"
+    <TextView
+        android:id="@+id/tvDetailedDate"
         android:layout_width="match_parent"
-        android:layout_height="200dip"
-        android:id="@+id/graph" />
+        android:layout_height="wrap_content"
+        android:textSize="18pt"
+        android:fontFamily="sans-serif-light"
+        android:paddingTop="30dp"
+        android:text="TextView" />
+
+   <com.jjoe64.graphview.GraphView
+       android:layout_marginTop="30dp"
+       android:layout_width="match_parent"
+       android:layout_height="300dip"
+       android:id="@+id/graph" />
+
+
+
+
 
 
 </LinearLayout>
