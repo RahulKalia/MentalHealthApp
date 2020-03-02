@@ -2,6 +2,7 @@ package com.example.fitnesstrackingapp;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -89,16 +90,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             bRegister.setVisibility(View.GONE);
             populateListView();
 
-            // Start the step counter service and set an alarm for it to be activated every hour
+            // Start the step counter service and set an alarm for it to be activated every hour to log the values it has collected
             AlarmManager scheduler = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
             Intent intent = new Intent(getApplicationContext(), StepLoggerService.class );
-            Intent savingIntent = new Intent(getApplicationContext(), StepLoggerService.class );
             PendingIntent scheduledIntent = PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            Intent accelerometerIntent = new Intent(getApplicationContext(), AccelerometerService.class );
+            PendingIntent scheduledAccelIntent = PendingIntent.getService(getApplicationContext(), 0, accelerometerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             // Set alarm to interval of one mintue for testing purposes - normally AlarmManager.INTERVAL_HOUR
             long minute = 60 * 1000;
             scheduler.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), minute, scheduledIntent);
-
+            scheduler.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), minute, scheduledAccelIntent);
         }else{
             startActivity(new Intent(this, Register.class));
         }

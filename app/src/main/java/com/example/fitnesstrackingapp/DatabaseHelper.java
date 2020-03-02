@@ -96,6 +96,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "  FOREIGN KEY(UID) REFERENCES user_table(UID)\n" +
                 ");";
         db.execSQL(createUserDNDTable);
+
+        // Creating DND Table for Do Not Disturb Times
+        String createUserShakeTable = "CREATE TABLE userShakeTable (\n" +
+                "  shakeID INTEGER PRIMARY KEY AUTOINCREMENT,  \n" +
+                "  shakeDate DATE, \n" +
+                "  quarterID INTEGER, \n" +
+                "  UID INTEGER, \n" +
+                "  FOREIGN KEY (UID) REFERENCES user_table(UID)\n" +
+                ");";
+        db.execSQL(createUserShakeTable);
+
     }
 
     @Override
@@ -200,6 +211,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 date +" "+ quarterID +" "+ steps +" "+ UID +" to " + "userStepsTable");
 
         long result = db.insert("userStepsTable", null, contentValues);
+        db.close();
+
+        //if date as inserted incorrectly it will return -1
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean addShakeDetectorData(String date, int quarterID, int UID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("shakeDate", date);
+        contentValues.put("quarterID", quarterID);
+        contentValues.put("UID", UID);
+
+
+        Log.d(TAG, "addRegisterData: Adding " +
+                date +" "+ quarterID +" "+ UID +" to " + "userStepsTable");
+
+        long result = db.insert("userShakeTable", null, contentValues);
         db.close();
 
         //if date as inserted incorrectly it will return -1

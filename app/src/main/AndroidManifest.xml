@@ -47,6 +47,9 @@
         <service android:name=".StepLoggerService"
             android:exported="false"/>
 
+        <service android:name=".AccelerometerService"
+            android:exported="false"/>
+
         <activity android:name=".ChartDisplayer">
             <!--Default Intent Filter-->
             <intent-filter>
