@@ -2,8 +2,8 @@ package com.example.fitnesstrackingapp;
 
 public class BayesHelper {
     // [rows][columns]
-    int[][] moodMatrix = new int[6][11];
-    float[][] bayesMatrix = new float[5][10];
+    static int[][] moodMatrix = new int[6][11];
+    static float[][] bayesMatrix = new float[5][10];
 
     public void updateMoodMatrix(int mood, int steps){
         // Increment column steps and corresponding mood
@@ -16,12 +16,13 @@ public class BayesHelper {
         moodMatrix[5][10]++; //total of all entries
 
         updateBayesTable(stepIndex);
+
     }
 
     public void init(){
         // Populate matrix and initialise to 1
-        for (int i = 0; i < moodMatrix.length-1; i++) {
-            for (int j = 0; j < moodMatrix[i].length-1; j++) {
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 10; j++) {
                 moodMatrix[i][j] = 1;
             }
         }
@@ -35,40 +36,42 @@ public class BayesHelper {
         for(int i =0; i <10; i++){
             moodMatrix[5][i] = 5;
         }
+
+        moodMatrix[5][10] = 50;
     }
 
 
     // Pass in number of steps and function returns bucket it belongs to
     public  int calculateStepBucket(int steps){
         if (steps >= 0 && steps <= 1000){
-            return 1;
+            return 0;
         }
         if (steps >= 1001 && steps <= 2000){
-            return 2;
+            return 1;
         }
         if (steps >= 2001 && steps <= 3000){
-            return 3;
+            return 2;
         }
         if (steps >= 3001 && steps <= 4000){
-            return 4;
+            return 3;
         }
         if (steps >= 4001 && steps <= 5000){
-            return 5;
+            return 4;
         }
         if (steps >= 5001 && steps <= 6000){
-            return 6;
+            return 5;
         }
         if (steps >= 6001 && steps <= 7000){
-            return 7;
+            return 6;
         }
         if (steps >= 7001 && steps <= 8000){
-            return 8;
+            return 7;
         }
         if (steps >= 8001 && steps <= 9000){
-            return 9;
+            return 8;
         }
         if (steps >= 9001 && steps <= 10000){
-            return 10;
+            return 9;
         }
         return -1;
     }
@@ -77,14 +80,23 @@ public class BayesHelper {
     public void updateBayesTable(int stepBracket){
 
         for (int i =0; i < 5; i++){
+
             // Step 1 numTimesMoodFeltInBracket/totalTimesMoodFelt
-            float pOfStepBracketGivenMood = (moodMatrix[i][stepBracket]/moodMatrix[i][10]);
+            float a  = moodMatrix[i][stepBracket];
+            float b = moodMatrix[i][10];
+            float pOfStepBracketGivenMood = (a/b);
+
+
 
             // Step 2 totalTimesMoodFelt/totalOfAllMoodsFelt
-            float pOfMood = (moodMatrix[i][10]/moodMatrix[5][10]);
+            float c = moodMatrix[i][10];
+            float d = moodMatrix[5][10];
+            float pOfMood = (c/d);
 
             // Step 3 totalStepsInBracket/totalStepsInAnyBracket
-            float pOfStepBracket = moodMatrix[5][stepBracket]/moodMatrix[5][10];
+            float e= moodMatrix[5][stepBracket];
+            float f= moodMatrix[5][10];
+            float pOfStepBracket = e/f;
 
             // Step 4 ((1*2)/3)
             float result = (pOfStepBracketGivenMood*pOfMood)/pOfStepBracket;

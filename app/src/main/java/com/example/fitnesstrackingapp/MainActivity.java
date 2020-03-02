@@ -146,23 +146,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case  R.id.bVeryHappy:
                 saveMoodSelection(5);
-                bayesHelper.updateMoodMatrix(5,totalSteps());
+                bayesHelper.updateMoodMatrix(4,totalSteps());
                 break;
             case  R.id.bHappy:
                 saveMoodSelection(4);
-                bayesHelper.updateMoodMatrix(4,totalSteps());
+                bayesHelper.updateMoodMatrix(3,totalSteps());
                 break;
             case  R.id.bNeutral:
                 saveMoodSelection(3);
-                bayesHelper.updateMoodMatrix(3,totalSteps());
+                bayesHelper.updateMoodMatrix(2,totalSteps());
                 break;
             case  R.id.bSad:
                 saveMoodSelection(2);
-                bayesHelper.updateMoodMatrix(2,totalSteps());
+                bayesHelper.updateMoodMatrix(1,totalSteps());
                 break;
             case  R.id.bVerySad:
                 saveMoodSelection(1);
-                bayesHelper.updateMoodMatrix(1,totalSteps());
+                bayesHelper.updateMoodMatrix(0,totalSteps());
                 break;
         }
     }
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
     }
 
-    private int totalSteps(){
+    public int totalSteps(){
         ArrayList<Integer> steps = mDatabaseHelper.getLastSteps(todaysDate);
         int totalSteps = 0;
         for (int i =0; i < steps.size(); i++){

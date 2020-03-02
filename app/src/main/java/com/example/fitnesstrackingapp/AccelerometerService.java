@@ -72,7 +72,7 @@ public class AccelerometerService extends Service implements SensorEventListener
                 Log.d("mySensor", "Acceleration is " + acceleration + "m/s^2");
 
                 if (acceleration > SHAKE_THRESHOLD) {
-                    mLastShakeTime = curTime;
+                        mLastShakeTime = curTime;
                     Toast.makeText(getApplicationContext(), "SHAKE DETECTED",
                             Toast.LENGTH_LONG).show();
 
