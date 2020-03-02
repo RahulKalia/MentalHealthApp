@@ -18,18 +18,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "MainActivity";
     TextView textView ;
-    Button bRegister, bSettings, bStepCounter , bTest;
+    Button bRegister, bSettings, bStepCounter , bMoodPredict;
     ImageButton bVeryHappy, bHappy, bNeutral, bSad, bVerySad;
     DatabaseHelper mDatabaseHelper;
     ListView listView;
-
+    BayesHelper bayesHelper;
+    String todaysDate;
 
     // When activity is created create the local store and set button on click listener.
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bRegister = (Button) findViewById(R.id.bRegister);
         bSettings = (Button) findViewById(R.id.bSettings);
         bStepCounter = (Button) findViewById(R.id.bStepCounter);
-        bTest = (Button) findViewById(R.id.bTest);
+        bMoodPredict = (Button) findViewById(R.id.bMoodPredict);
 
         bVeryHappy = (ImageButton) findViewById(R.id.bVeryHappy);
         bHappy = (ImageButton) findViewById(R.id.bHappy);
@@ -53,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bSettings.setOnClickListener(this);
         bRegister.setOnClickListener(this);
         bStepCounter.setOnClickListener(this);
-        bTest.setOnClickListener(this);
+        bMoodPredict.setOnClickListener(this);
         bVeryHappy.setOnClickListener(this);
         bHappy.setOnClickListener(this);
         bNeutral.setOnClickListener(this);
@@ -62,6 +69,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         mDatabaseHelper = new DatabaseHelper(this);
+
+        bayesHelper = new BayesHelper();
+        bayesHelper.init();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDate dateNow = LocalDate.now();
+        LocalTime timeNow = LocalTime.now();
+
+        char[] time = timeNow.toString().toCharArray();
+        todaysDate = dateNow.toString();
     }
 
     // On starting check if a user exists and if not redirect to the Register page.
@@ -121,23 +137,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bStepCounter:
                 startActivity(new Intent(this, StepSensor.class));
                 break;
-            case R.id.bTest:
-                startActivity(new Intent(this, ChartDisplayer.class));
+            case R.id.bMoodPredict:
+                startActivity(new Intent(this, MoodPredictor.class));
                 break;
             case  R.id.bVeryHappy:
                 saveMoodSelection(5);
+                bayesHelper.updateMoodMatrix(5,totalSteps());
                 break;
             case  R.id.bHappy:
                 saveMoodSelection(4);
+                bayesHelper.updateMoodMatrix(4,totalSteps());
                 break;
             case  R.id.bNeutral:
                 saveMoodSelection(3);
+                bayesHelper.updateMoodMatrix(3,totalSteps());
                 break;
             case  R.id.bSad:
                 saveMoodSelection(2);
+                bayesHelper.updateMoodMatrix(2,totalSteps());
                 break;
             case  R.id.bVerySad:
                 saveMoodSelection(1);
+                bayesHelper.updateMoodMatrix(1,totalSteps());
                 break;
         }
     }
@@ -179,6 +200,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void toastMessage(String message){
         Toast.makeText(this,message, Toast.LENGTH_SHORT).show();
+    }
+
+    private int totalSteps(){
+        ArrayList<Integer> steps = mDatabaseHelper.getLastSteps(todaysDate);
+        int totalSteps = 0;
+        for (int i =0; i < steps.size(); i++){
+            totalSteps += steps.get(i);
+        }
+        return totalSteps;
     }
 
 }

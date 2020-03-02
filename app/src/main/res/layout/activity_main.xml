@@ -56,14 +56,14 @@
         android:text="Settings" />
 
     <Button
-        android:id="@+id/bTest"
+        android:id="@+id/bMoodPredict"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Test" />
+        android:text="Predict my Mood" />
 
 
     <LinearLayout
-        android:id="@+id/LinearLayout02"
+        android:id="@+id/LinearLayout01"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true">
@@ -110,7 +110,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/LinearLayout02">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
