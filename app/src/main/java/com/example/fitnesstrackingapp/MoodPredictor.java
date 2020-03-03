@@ -2,22 +2,21 @@ package com.example.fitnesstrackingapp;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class MoodPredictor extends AppCompatActivity {
 
-    TextView tvMoodResult;
+    ImageView ivMoodResult;
     BayesHelper bayesHelper = new BayesHelper();
     DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
@@ -29,7 +28,6 @@ public class MoodPredictor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mood_predictor);
 
-        tvMoodResult = (TextView) findViewById(R.id.tvMoodResult);
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDate dateNow = LocalDate.now();
@@ -46,7 +44,26 @@ public class MoodPredictor extends AppCompatActivity {
 
 
         int mood = bayesHelper.getMood(totalSteps);
-        tvMoodResult.setText(mood + "");
+
+        ivMoodResult = (ImageView) findViewById(R.id.imageView);
+        switch (mood){
+            case 1:
+                ivMoodResult.setImageResource(R.drawable.ic_very_sad);
+                break;
+            case 2:
+                ivMoodResult.setImageResource(R.drawable.ic_sad);
+                break;
+            case 3:
+                ivMoodResult.setImageResource(R.drawable.ic_neutral);
+                break;
+            case 4:
+                ivMoodResult.setImageResource(R.drawable.ic_happy);
+                break;
+            case 5:
+                ivMoodResult.setImageResource(R.drawable.ic_very_happy);
+                break;
+    }
+
 
     }
 

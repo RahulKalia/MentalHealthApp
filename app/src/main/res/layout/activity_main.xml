@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:text="TextView"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        style="@style/TextviewStyle"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -47,19 +48,23 @@
         android:id="@+id/bStepCounter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Step Counter" />
+        android:text="Step Counter"
+        style="@style/ButtonStyle"/>
 
     <Button
         android:id="@+id/bSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Settings" />
+        android:text="Settings"
+        style="@style/ButtonStyle"/>
 
     <Button
         android:id="@+id/bMoodPredict"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Predict my Mood" />
+        android:text="Predict my Mood"
+        style="@style/ButtonStyle"
+        android:layout_marginBottom="20dp"/>
 
 
     <LinearLayout
@@ -72,6 +77,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/ic_very_happy"
+            android:background="@color/VeryHappy"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1" >
         </ImageButton>
 
@@ -79,6 +87,9 @@
             android:id="@+id/bHappy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/Happy"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_happy">
         </ImageButton>
@@ -87,6 +98,9 @@
             android:id="@+id/bNeutral"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/Neutral"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_neutral">
         </ImageButton>
@@ -95,6 +109,7 @@
             android:id="@+id/bSad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/Sad"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_sad">
         </ImageButton>
@@ -103,20 +118,14 @@
             android:id="@+id/bVerySad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/VerySad"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_very_sad">
         </ImageButton>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/LinearLayout02">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="Thanks for recording! Come back in 3 hours."/>
-    </LinearLayout>
+
 
 </LinearLayout>

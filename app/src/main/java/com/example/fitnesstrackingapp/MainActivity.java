@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             displayUserDetails();
             bRegister.setVisibility(View.GONE);
             populateListView();
+            mDatabaseHelper.populateDummyData();
 
             // Start the step counter service and set an alarm for it to be activated every hour to log the values it has collected
             AlarmManager scheduler = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -214,5 +215,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return totalSteps;
     }
+
 
 }

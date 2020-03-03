@@ -40,7 +40,7 @@ public class AccelerometerService extends Service implements SensorEventListener
     public int onStartCommand(Intent intent, int flags, int startId){
         Log.d(TAG, "onStartCommand started");
 
-        Toast.makeText(this, "Start Detecting", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Start Detecting", Toast.LENGTH_LONG).show();
         SM = (SensorManager) getSystemService(SENSOR_SERVICE);
         mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);

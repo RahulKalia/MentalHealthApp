@@ -357,4 +357,119 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
+    public void populateDummyData(){
+        BayesHelper bayesHelper = new BayesHelper();
+        addStepCounterData("2020/02/28", 1, 19f,1);
+        addStepCounterData("2020/02/28", 2, 154f,1);
+        addStepCounterData("2020/02/28", 3, 800f,1);
+        addStepCounterData("2020/02/28", 4, 942f,1);
+        addStepCounterData("2020/02/28", 5, 1405f,1);
+        addStepCounterData("2020/02/28", 6, 700f,1);
+
+        saveMood(1,"2020/02/28", 1);
+        bayesHelper.updateMoodMatrix(1,19);
+        saveMood(2,"2020/02/28", 2);
+        bayesHelper.updateMoodMatrix(2,173);
+        saveMood(3,"2020/02/28", 3);
+        bayesHelper.updateMoodMatrix(3,973);
+        saveMood(4,"2020/02/28", 4);
+        bayesHelper.updateMoodMatrix(4,1915);
+        saveMood(5,"2020/02/28", 5);
+        bayesHelper.updateMoodMatrix(5,3320);
+        saveMood(4,"2020/02/28", 6);
+        bayesHelper.updateMoodMatrix(4,4020);
+
+
+        addStepCounterData("2020/02/29", 1, 1120f,1);
+        addStepCounterData("2020/02/29", 2, 400f,1);
+        addStepCounterData("2020/02/29", 3, 12f,1);
+        addStepCounterData("2020/02/29", 4, 3004f,1);
+        addStepCounterData("2020/02/29", 5, 1503f,1);
+        addStepCounterData("2020/02/29", 6, 11f,1);
+
+        saveMood(4,"2020/02/29", 1);
+        bayesHelper.updateMoodMatrix(4,1120);
+        saveMood(3,"2020/02/29", 2);
+        bayesHelper.updateMoodMatrix(3,1520);
+        saveMood(4,"2020/02/29", 3);
+        bayesHelper.updateMoodMatrix(4,1532);
+        saveMood(5,"2020/02/29", 4);
+        bayesHelper.updateMoodMatrix(5,4536);
+        saveMood(5,"2020/02/29", 5);
+        bayesHelper.updateMoodMatrix(5,6039);
+        saveMood(3,"2020/02/29", 6);
+        bayesHelper.updateMoodMatrix(3,6050);
+
+        addStepCounterData("2020/03/01", 1, 19f,1);
+        addStepCounterData("2020/03/01", 2, 154f,1);
+        addStepCounterData("2020/03/01", 3, 80f,1);
+        addStepCounterData("2020/03/01", 4, 92f,1);
+        addStepCounterData("2020/03/01", 5, 145f,1);
+        addStepCounterData("2020/03/01", 6, 70f,1);
+
+        saveMood(1,"2020/03/01", 1);
+        bayesHelper.updateMoodMatrix(1,19);
+        saveMood(3,"2020/03/01", 2);
+        bayesHelper.updateMoodMatrix(3,173);
+        saveMood(1,"2020/03/01", 3);
+        bayesHelper.updateMoodMatrix(1,253);
+        saveMood(1,"2020/03/01", 4);
+        bayesHelper.updateMoodMatrix(1,345);
+        saveMood(2,"2020/03/01", 5);
+        bayesHelper.updateMoodMatrix(2,490);
+        saveMood(1,"2020/03/01", 6);
+        bayesHelper.updateMoodMatrix(1,560);
+
+
+        addStepCounterData("2020/03/02", 1, 1120f,1);
+        addStepCounterData("2020/03/02", 2, 40f,1);
+        addStepCounterData("2020/03/02", 3, 12f,1);
+        addStepCounterData("2020/03/02", 4, 3004f,1);
+        addStepCounterData("2020/03/02", 5, 153f,1);
+        addStepCounterData("2020/03/02", 6, 1111f,1);
+
+        saveMood(1,"2020/03/02", 1);
+        bayesHelper.updateMoodMatrix(1,1120);
+        saveMood(3,"2020/03/02", 2);
+        bayesHelper.updateMoodMatrix(3,1160);
+        saveMood(1,"2020/03/02", 3);
+        bayesHelper.updateMoodMatrix(1,1172);
+        saveMood(1,"2020/03/02", 4);
+        bayesHelper.updateMoodMatrix(1,4176);
+        saveMood(2,"2020/03/02", 5);
+        bayesHelper.updateMoodMatrix(2,4329);
+        saveMood(1,"2020/03/02", 6);
+        bayesHelper.updateMoodMatrix(1,5440);
+
+
+
+    }
+
+    //for testing only
+    public boolean saveMood(int moodSelection, String date, int quarter){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+
+        contentValues.put("mood", moodSelection);
+        contentValues.put("moodDate", date);
+        contentValues.put("quarterID", quarter);
+        contentValues.put("UID", 1);
+
+
+
+
+        Log.d(TAG, "addRegisterData: Adding " +
+                moodSelection +" "+ quarter +" "+ 1 +" to " + "userMoodTable");
+
+        long result = db.insert("userMoodTable", null, contentValues);
+        db.close();
+        //if date as inserted incorrectly it will return -1
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }
