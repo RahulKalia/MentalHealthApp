@@ -147,22 +147,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case  R.id.bVeryHappy:
                 saveMoodSelection(5);
+                toastMessage("Thanks for logging your mood!");
                 bayesHelper.updateMoodMatrix(4,totalSteps());
                 break;
             case  R.id.bHappy:
                 saveMoodSelection(4);
+                toastMessage("Thanks for logging your mood!");
                 bayesHelper.updateMoodMatrix(3,totalSteps());
                 break;
             case  R.id.bNeutral:
                 saveMoodSelection(3);
+                toastMessage("Thanks for logging your mood!");
                 bayesHelper.updateMoodMatrix(2,totalSteps());
                 break;
             case  R.id.bSad:
                 saveMoodSelection(2);
+                toastMessage("Thanks for logging your mood!");
                 bayesHelper.updateMoodMatrix(1,totalSteps());
                 break;
             case  R.id.bVerySad:
                 saveMoodSelection(1);
+                toastMessage("Thanks for logging your mood!");
                 bayesHelper.updateMoodMatrix(0,totalSteps());
                 break;
         }
