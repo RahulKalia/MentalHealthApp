@@ -2,14 +2,17 @@ package com.example.fitnesstrackingapp;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,6 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -90,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             populateListView();
             mDatabaseHelper.populateDummyData();
 
+
             // Start the step counter service and set an alarm for it to be activated every hour to log the values it has collected
             AlarmManager scheduler = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
@@ -99,10 +104,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent accelerometerIntent = new Intent(getApplicationContext(), AccelerometerService.class );
             PendingIntent scheduledAccelIntent = PendingIntent.getService(getApplicationContext(), 0, accelerometerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+            Calendar calendar = Calendar.getInstance();
+            Intent alarmIntent = new Intent(MainActivity.this, AlarmReceiver.class);
+            PendingIntent schdeuledNotificationIntent = PendingIntent.getBroadcast(this, 0,alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
             // Set alarm to interval of one mintue for testing purposes - normally AlarmManager.INTERVAL_HOUR
             long minute = 60 * 1000;
             scheduler.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), minute, scheduledIntent);
             scheduler.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), minute, scheduledAccelIntent);
+            //Set every three hours
+            scheduler.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_HOUR *3, schdeuledNotificationIntent);
         }else{
             startActivity(new Intent(this, Register.class));
         }
@@ -220,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return totalSteps;
     }
 
-
     public int totalJitters(){
         ArrayList<Integer> steps = mDatabaseHelper.getJittersPerDay(todaysDate);
         int totalSteps = 0;
@@ -229,5 +239,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return totalSteps;
     }
+
 
 }
