@@ -31,7 +31,7 @@ public class AccelerometerService extends Service implements SensorEventListener
     private SensorManager SM;
     private float x1, x2, x3;
     private static final float ERROR = (float) 7.0;
-    private static final float SHAKE_THRESHOLD = 15.00f; // m/S**2
+    private static final float SHAKE_THRESHOLD = 11.00f; // m/S**2
     private static final int MIN_TIME_BETWEEN_SHAKES_MILLISECS = 1000000;
     private long mLastShakeTime;
 
@@ -105,7 +105,7 @@ public class AccelerometerService extends Service implements SensorEventListener
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void addShake(float steps, long timestamp){
+    public void addShake(float shake, long timestamp){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDate dateNow = LocalDate.now();
         LocalTime timeNow = LocalTime.now();
@@ -116,7 +116,7 @@ public class AccelerometerService extends Service implements SensorEventListener
         // Parsing char array to quarter calculator
         int qt = mDatabaseHelper.calculateQuarterID(time);
 
-        Log.d(TAG,"Adding new record: " + dt +" " + qt +" " + steps +" "+ 1);
+        Log.d(TAG,"Adding new record: " + dt +" " + qt +" " + shake +" "+ 1);
         mDatabaseHelper.addShakeDetectorData(dt, qt, 1);
 
     }

@@ -42,8 +42,13 @@ public class MoodPredictor extends AppCompatActivity {
             totalSteps += steps.get(i);
         }
 
+        ArrayList<Integer> jitters = databaseHelper.getJittersPerDay(dt);
+        int totalJitters = 0;
+        for (int i =0; i < steps.size(); i++){
+            totalJitters += jitters.get(i);
+        }
 
-        int mood = bayesHelper.getMood(totalSteps);
+        int mood = bayesHelper.getMood(totalSteps, totalJitters);
 
         ivMoodResult = (ImageView) findViewById(R.id.imageView);
         switch (mood){

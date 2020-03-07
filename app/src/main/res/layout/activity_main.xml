@@ -52,20 +52,19 @@
         style="@style/ButtonStyle"/>
 
     <Button
+        android:id="@+id/bMoodPredict"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Predict Mood!"
+        style="@style/ButtonStyle"
+        />
+    <Button
         android:id="@+id/bSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Settings"
-        style="@style/ButtonStyle"/>
-
-    <Button
-        android:id="@+id/bMoodPredict"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Predict my Mood"
         style="@style/ButtonStyle"
         android:layout_marginBottom="20dp"/>
-
 
     <LinearLayout
         android:id="@+id/LinearLayout01"

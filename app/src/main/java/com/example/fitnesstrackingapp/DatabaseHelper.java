@@ -231,7 +231,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         Log.d(TAG, "addRegisterData: Adding " +
-                date +" "+ quarterID +" "+ UID +" to " + "userStepsTable");
+                date +" "+ quarterID +" "+ UID +" to " + "userShakeTable");
 
         long result = db.insert("userShakeTable", null, contentValues);
         db.close();
@@ -315,6 +315,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return stepCount;
     }
 
+
+    public ArrayList<Integer> getJittersPerDay(String dateOfShake){
+        ArrayList<Integer> jitterCount = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor data = null;
+        for (int i =1; i <=6; i++){
+            int item = 0;
+            String query = "SELECT COUNT(shakeID) FROM userShakeTable WHERE shakeDate = "+ dateOfShake +" ;";
+            data = db.rawQuery(query,null);
+
+
+            boolean inBounds = data.getCount() >= 1;
+
+            if (inBounds){
+                data.moveToNext();
+                item= data.getInt(0);
+                Integer iItem = new Integer(item);
+                jitterCount.add(iItem);
+                Log.d(TAG, ""+item);
+            }else{
+                jitterCount.add(0);
+            }
+        }
+
+        data.close();
+
+        return jitterCount;
+    }
     // TO BE CHANGED
     public Cursor getListContents(){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -358,88 +386,88 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public void populateDummyData(){
-        BayesHelper bayesHelper = new BayesHelper();
-        addStepCounterData("2020/02/28", 1, 19f,1);
-        addStepCounterData("2020/02/28", 2, 154f,1);
-        addStepCounterData("2020/02/28", 3, 800f,1);
-        addStepCounterData("2020/02/28", 4, 942f,1);
-        addStepCounterData("2020/02/28", 5, 1405f,1);
-        addStepCounterData("2020/02/28", 6, 700f,1);
-
-        saveMood(1,"2020/02/28", 1);
-        bayesHelper.updateMoodMatrix(1,19);
-        saveMood(2,"2020/02/28", 2);
-        bayesHelper.updateMoodMatrix(2,173);
-        saveMood(3,"2020/02/28", 3);
-        bayesHelper.updateMoodMatrix(3,973);
-        saveMood(4,"2020/02/28", 4);
-        bayesHelper.updateMoodMatrix(4,1915);
-        saveMood(5,"2020/02/28", 5);
-        bayesHelper.updateMoodMatrix(5,3320);
-        saveMood(4,"2020/02/28", 6);
-        bayesHelper.updateMoodMatrix(4,4020);
-
-
-        addStepCounterData("2020/02/29", 1, 1120f,1);
-        addStepCounterData("2020/02/29", 2, 400f,1);
-        addStepCounterData("2020/02/29", 3, 12f,1);
-        addStepCounterData("2020/02/29", 4, 3004f,1);
-        addStepCounterData("2020/02/29", 5, 1503f,1);
-        addStepCounterData("2020/02/29", 6, 11f,1);
-
-        saveMood(4,"2020/02/29", 1);
-        bayesHelper.updateMoodMatrix(4,1120);
-        saveMood(3,"2020/02/29", 2);
-        bayesHelper.updateMoodMatrix(3,1520);
-        saveMood(4,"2020/02/29", 3);
-        bayesHelper.updateMoodMatrix(4,1532);
-        saveMood(5,"2020/02/29", 4);
-        bayesHelper.updateMoodMatrix(5,4536);
-        saveMood(5,"2020/02/29", 5);
-        bayesHelper.updateMoodMatrix(5,6039);
-        saveMood(3,"2020/02/29", 6);
-        bayesHelper.updateMoodMatrix(3,6050);
-
-        addStepCounterData("2020/03/01", 1, 19f,1);
-        addStepCounterData("2020/03/01", 2, 154f,1);
-        addStepCounterData("2020/03/01", 3, 80f,1);
-        addStepCounterData("2020/03/01", 4, 92f,1);
-        addStepCounterData("2020/03/01", 5, 145f,1);
-        addStepCounterData("2020/03/01", 6, 70f,1);
-
-        saveMood(1,"2020/03/01", 1);
-        bayesHelper.updateMoodMatrix(1,19);
-        saveMood(3,"2020/03/01", 2);
-        bayesHelper.updateMoodMatrix(3,173);
-        saveMood(1,"2020/03/01", 3);
-        bayesHelper.updateMoodMatrix(1,253);
-        saveMood(1,"2020/03/01", 4);
-        bayesHelper.updateMoodMatrix(1,345);
-        saveMood(2,"2020/03/01", 5);
-        bayesHelper.updateMoodMatrix(2,490);
-        saveMood(1,"2020/03/01", 6);
-        bayesHelper.updateMoodMatrix(1,560);
+//        BayesHelper bayesHelper = new BayesHelper();
+//        addStepCounterData("2020/02/28", 1, 19f,1);
+//        addStepCounterData("2020/02/28", 2, 154f,1);
+//        addStepCounterData("2020/02/28", 3, 800f,1);
+//        addStepCounterData("2020/02/28", 4, 942f,1);
+//        addStepCounterData("2020/02/28", 5, 1405f,1);
+//        addStepCounterData("2020/02/28", 6, 700f,1);
+//
+//        saveMood(1,"2020/02/28", 1);
+//        bayesHelper.updateMatrices(1,19,12);
+//        saveMood(2,"2020/02/28", 2);
+//        bayesHelper.updateMatrices(2,173,12);
+//        saveMood(3,"2020/02/28", 3);
+//        bayesHelper.updateMatrices(3,973,12);
+//        saveMood(4,"2020/02/28", 4);
+//        bayesHelper.updateMatrices(4,1915,12);
+//        saveMood(5,"2020/02/28", 5);
+//        bayesHelper.updateMatrices(5,3320,12);
+//        saveMood(4,"2020/02/28", 6);
+//        bayesHelper.updateMatrices(4,4020,12);
 
 
-        addStepCounterData("2020/03/02", 1, 1120f,1);
-        addStepCounterData("2020/03/02", 2, 40f,1);
-        addStepCounterData("2020/03/02", 3, 12f,1);
-        addStepCounterData("2020/03/02", 4, 3004f,1);
-        addStepCounterData("2020/03/02", 5, 153f,1);
-        addStepCounterData("2020/03/02", 6, 1111f,1);
-
-        saveMood(1,"2020/03/02", 1);
-        bayesHelper.updateMoodMatrix(1,1120);
-        saveMood(3,"2020/03/02", 2);
-        bayesHelper.updateMoodMatrix(3,1160);
-        saveMood(1,"2020/03/02", 3);
-        bayesHelper.updateMoodMatrix(1,1172);
-        saveMood(1,"2020/03/02", 4);
-        bayesHelper.updateMoodMatrix(1,4176);
-        saveMood(2,"2020/03/02", 5);
-        bayesHelper.updateMoodMatrix(2,4329);
-        saveMood(1,"2020/03/02", 6);
-        bayesHelper.updateMoodMatrix(1,5440);
+//        addStepCounterData("2020/02/29", 1, 1120f,1);
+//        addStepCounterData("2020/02/29", 2, 400f,1);
+//        addStepCounterData("2020/02/29", 3, 12f,1);
+//        addStepCounterData("2020/02/29", 4, 3004f,1);
+//        addStepCounterData("2020/02/29", 5, 1503f,1);
+//        addStepCounterData("2020/02/29", 6, 11f,1);
+//
+//        saveMood(4,"2020/02/29", 1);
+//        bayesHelper.updateMatrices(4,1120,12);
+//        saveMood(3,"2020/02/29", 2);
+//        bayesHelper.updateMatrices(3,1520,12);
+//        saveMood(4,"2020/02/29", 3);
+//        bayesHelper.updateMatrices(4,1532,12);
+//        saveMood(5,"2020/02/29", 4);
+//        bayesHelper.updateMatrices(5,4536,12);
+//        saveMood(5,"2020/02/29", 5);
+//        bayesHelper.updateMatrices(5,6039,12);
+//        saveMood(3,"2020/02/29", 6);
+//        bayesHelper.updateMatrices(3,6050,12);
+//
+//        addStepCounterData("2020/03/01", 1, 19f,1);
+//        addStepCounterData("2020/03/01", 2, 154f,1);
+//        addStepCounterData("2020/03/01", 3, 80f,1);
+//        addStepCounterData("2020/03/01", 4, 92f,1);
+//        addStepCounterData("2020/03/01", 5, 145f,1);
+//        addStepCounterData("2020/03/01", 6, 70f,1);
+//
+//        saveMood(1,"2020/03/01", 1);
+//        bayesHelper.updateMatrices(1,19,12);
+//        saveMood(3,"2020/03/01", 2);
+//        bayesHelper.updateMatrices(3,173,12);
+//        saveMood(1,"2020/03/01", 3);
+//        bayesHelper.updateMatrices(1,253,12);
+//        saveMood(1,"2020/03/01", 4);
+//        bayesHelper.updateMatrices(1,345,12);
+//        saveMood(2,"2020/03/01", 5);
+//        bayesHelper.updateMatrices(2,490,12);
+//        saveMood(1,"2020/03/01", 6);
+//        bayesHelper.updateMatrices(1,560,12);
+//
+//
+//        addStepCounterData("2020/03/02", 1, 1120f,1);
+//        addStepCounterData("2020/03/02", 2, 40f,1);
+//        addStepCounterData("2020/03/02", 3, 12f,1);
+//        addStepCounterData("2020/03/02", 4, 3004f,1);
+//        addStepCounterData("2020/03/02", 5, 153f,1);
+//        addStepCounterData("2020/03/02", 6, 1111f,1);
+//
+//        saveMood(1,"2020/03/02", 1);
+//        bayesHelper.updateMatrices(1,1120,21);
+//        saveMood(3,"2020/03/02", 2);
+//        bayesHelper.updateMatrices(3,1160,21);
+//        saveMood(1,"2020/03/02", 3);
+//        bayesHelper.updateMatrices(1,1172,32);
+//        saveMood(1,"2020/03/02", 4);
+//        bayesHelper.updateMatrices(1,4176,23);
+//        saveMood(2,"2020/03/02", 5);
+//        bayesHelper.updateMatrices(2,4329,34);
+//        saveMood(1,"2020/03/02", 6);
+//        bayesHelper.updateMatrices(1,5440,23);
 
 
 

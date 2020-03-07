@@ -2,7 +2,6 @@ package com.example.fitnesstrackingapp;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -148,27 +147,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case  R.id.bVeryHappy:
                 saveMoodSelection(5);
                 toastMessage("Thanks for logging your mood!");
-                bayesHelper.updateMoodMatrix(4,totalSteps());
+                bayesHelper.updateMatrices(4,totalSteps(), totalJitters());
                 break;
             case  R.id.bHappy:
                 saveMoodSelection(4);
                 toastMessage("Thanks for logging your mood!");
-                bayesHelper.updateMoodMatrix(3,totalSteps());
+                bayesHelper.updateMatrices(3,totalSteps(),totalJitters());
                 break;
             case  R.id.bNeutral:
                 saveMoodSelection(3);
                 toastMessage("Thanks for logging your mood!");
-                bayesHelper.updateMoodMatrix(2,totalSteps());
+                bayesHelper.updateMatrices(2,totalSteps(),totalJitters());
                 break;
             case  R.id.bSad:
                 saveMoodSelection(2);
                 toastMessage("Thanks for logging your mood!");
-                bayesHelper.updateMoodMatrix(1,totalSteps());
+                bayesHelper.updateMatrices(1,totalSteps(),totalJitters());
                 break;
             case  R.id.bVerySad:
                 saveMoodSelection(1);
                 toastMessage("Thanks for logging your mood!");
-                bayesHelper.updateMoodMatrix(0,totalSteps());
+                bayesHelper.updateMatrices(0,totalSteps(),totalJitters());
                 break;
         }
     }
@@ -221,5 +220,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return totalSteps;
     }
 
+
+    public int totalJitters(){
+        ArrayList<Integer> steps = mDatabaseHelper.getJittersPerDay(todaysDate);
+        int totalSteps = 0;
+        for (int i =0; i < steps.size(); i++){
+            totalSteps += steps.get(i);
+        }
+        return totalSteps;
+    }
 
 }
